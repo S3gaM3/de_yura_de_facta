@@ -8,7 +8,7 @@ export type EasterEgg = {
   reward: string
 }
 
-/** 20 пасхальных яиц */
+/** 19 пасхальных яиц */
 export const EASTER_EGGS: EasterEgg[] = [
   { id: 'egg_1', name: 'Скрытое сердечко', hint: 'Найди сердечко в неожиданном месте', howToFind: 'Кликни на сердечко в заголовке 7 раз подряд', reward: 'theme_soft' },
   { id: 'egg_2', name: 'Тайный код', hint: 'Попробуй ввести код в консоли', howToFind: 'Открой консоль браузера (F12) и введи: petr()', reward: 'confetti' },
@@ -21,15 +21,13 @@ export const EASTER_EGGS: EasterEgg[] = [
   { id: 'egg_9', name: 'Код Коннами', hint: 'Легендарная комбинация', howToFind: 'Введи код Коннами: ↑↑↓↓←→←→BA', reward: 'theme_soft' },
   { id: 'egg_10', name: 'Тройной тап', hint: 'Три быстрых тапа по экрану', howToFind: 'Тройной тап по заголовку "Пётр"', reward: 'sparkle' },
   { id: 'egg_11', name: 'Секретная зона: Комбинация', hint: 'В секрете попробуй комбинацию', howToFind: 'В секретной зоне нажми все кнопки игр по порядку', reward: 'confetti_rainbow' },
-  { id: 'egg_12', name: 'Секретная зона: Таймер', hint: 'Проведи время в секрете', howToFind: 'Проведи 5 минут в секретной зоне', reward: 'stars_bg' },
   { id: 'egg_13', name: 'Секретная зона: Все игры', hint: 'Сыграй во все игры подряд', howToFind: 'Запусти все игры в секрете без возврата', reward: 'theme_cool' },
   { id: 'egg_14', name: 'Секретная зона: Идеальный результат', hint: 'Набери 100% во всех викторинах', howToFind: 'Пройди все викторины на 100%', reward: 'rainbow_hearts' },
-  { id: 'egg_15', name: 'Секретная зона: Быстрый', hint: 'Пройди всё быстро', howToFind: 'Пройди 3 викторины за 2 минуты', reward: 'confetti_rainbow' },
-  { id: 'egg_16', name: 'URL магия', hint: 'Попробуй изменить URL', howToFind: 'Добавь ?secret=petr в конец URL', reward: 'stars_bg' },
-  { id: 'egg_17', name: 'Локальное хранилище', hint: 'Проверь localStorage', howToFind: 'В консоли выполни: localStorage.setItem("petr-easter", "found")', reward: 'theme_cool' },
-  { id: 'egg_18', name: 'Комбинация действий', hint: 'Выполни действия в правильном порядке', howToFind: 'Открой факт → Открой открытку → Подпиши договор → Оставь пожелание', reward: 'glow_cards' },
-  { id: 'egg_19', name: 'Секретная зона: Мастер', hint: 'Стань мастером секрета', howToFind: 'Выполни все секретные достижения', reward: 'rainbow_hearts' },
-  { id: 'egg_20', name: 'Абсолютное яйцо', hint: 'Найди все остальные яйца', howToFind: 'Найди все 19 предыдущих яиц', reward: 'confetti_rainbow' },
+  { id: 'egg_15', name: 'URL магия', hint: 'Попробуй изменить URL', howToFind: 'Добавь ?secret=petr в конец URL', reward: 'stars_bg' },
+  { id: 'egg_16', name: 'Локальное хранилище', hint: 'Проверь localStorage', howToFind: 'В консоли выполни: localStorage.setItem("petr-easter", "found")', reward: 'theme_cool' },
+  { id: 'egg_17', name: 'Комбинация действий', hint: 'Выполни действия в правильном порядке', howToFind: 'Открой факт → Открой открытку → Подпиши договор → Оставь пожелание', reward: 'glow_cards' },
+  { id: 'egg_18', name: 'Секретная зона: Мастер', hint: 'Стань мастером секрета', howToFind: 'Выполни все секретные достижения', reward: 'rainbow_hearts' },
+  { id: 'egg_19', name: 'Абсолютное яйцо', hint: 'Найди все остальные яйца', howToFind: 'Найди все 18 предыдущих яиц', reward: 'confetti_rainbow' },
 ]
 
 const STORAGE_KEY = 'petr-easter-eggs'
@@ -57,14 +55,14 @@ export function findEgg(id: string): boolean {
   }
 }
 
-/** Подсказка показывается каждые 5 достижений */
+/** Подсказка показывается каждые 5 достижений - теперь показывает явную инструкцию */
 export function getHintForAchievementCount(count: number): string | null {
   const eggIndex = Math.floor(count / 5) - 1
   if (eggIndex >= 0 && eggIndex < EASTER_EGGS.length) {
     const found = getFoundEggs()
     const egg = EASTER_EGGS[eggIndex]
     if (!found.includes(egg.id)) {
-      return egg.hint
+      return egg.howToFind // Используем явную инструкцию вместо подсказки
     }
   }
   return null

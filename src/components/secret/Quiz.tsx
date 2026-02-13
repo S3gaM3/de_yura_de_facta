@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './Quiz.css'
 
 export type QuizQuestion = {
@@ -14,21 +14,43 @@ type QuizProps = {
   onComplete?: () => void
 }
 
+// Перемешивание массива (Fisher-Yates)
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
 export function Quiz({ title, questions, onBack, onComplete }: QuizProps) {
   const [index, setIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [answered, setAnswered] = useState(false)
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null)
   const [finished, setFinished] = useState(false)
+  const [shuffledOptions, setShuffledOptions] = useState<{ options: string[]; correctIndex: number } | null>(null)
 
   const q = questions[index]
   const isLast = index === questions.length - 1
 
+  // Перемешиваем варианты ответов при смене вопроса
+  useEffect(() => {
+    if (q) {
+      const shuffled = shuffleArray(q.options)
+      const correctIndex = shuffled.findIndex((opt) => opt === q.options[q.correct])
+      setShuffledOptions({ options: shuffled, correctIndex })
+      setAnswered(false)
+      setSelectedChoice(null)
+    }
+  }, [index, q])
+
   const handleAnswer = (choice: number) => {
-    if (answered) return
+    if (answered || !shuffledOptions) return
     setSelectedChoice(choice)
     setAnswered(true)
-    if (choice === q.correct) setScore((s) => s + 1)
+    if (choice === shuffledOptions.correctIndex) setScore((s) => s + 1)
   }
 
   const handleNext = () => {
@@ -37,10 +59,10 @@ export function Quiz({ title, questions, onBack, onComplete }: QuizProps) {
       onComplete?.()
     } else {
       setIndex((i) => i + 1)
-      setAnswered(false)
-      setSelectedChoice(null)
     }
   }
+
+  if (!q || !shuffledOptions) return null
 
   if (finished) {
     const pct = Math.round((score / questions.length) * 100)
@@ -64,15 +86,16 @@ export function Quiz({ title, questions, onBack, onComplete }: QuizProps) {
       <p className="quiz__progress">{index + 1} / {questions.length}</p>
       <p className="quiz__question">{q.question}</p>
       <ul className="quiz__options">
-        {q.options.map((opt, i) => (
+        {shuffledOptions.options.map((opt, i) => (
           <li key={i}>
             <button
               type="button"
-              className={`quiz__opt ${answered ? (i === q.correct ? 'quiz__opt--correct' : (selectedChoice === i ? 'quiz__opt--wrong' : '')) : ''}`}
+              className={`quiz__opt ${answered ? (i === shuffledOptions.correctIndex ? 'quiz__opt--correct' : (selectedChoice === i ? 'quiz__opt--wrong' : '')) : ''}`}
               onClick={() => handleAnswer(i)}
               disabled={answered}
             >
-              {opt}
+              <span className="quiz__opt-letter">{String.fromCharCode(65 + i)}</span>
+              <span className="quiz__opt-text">{opt}</span>
             </button>
           </li>
         ))}

@@ -181,8 +181,8 @@ export default function App() {
   // Пасхальное яйцо: URL параметр
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    if (params.get('secret') === 'petr' && !getFoundEggs().includes('egg_16')) {
-      if (findEgg('egg_16')) {
+    if (params.get('secret') === 'petr' && !getFoundEggs().includes('egg_15')) {
+      if (findEgg('egg_15')) {
         fireConfetti()
         setXP(() => addXP(XP_REWARDS.easterEgg))
       }
@@ -192,8 +192,8 @@ export default function App() {
   // Пасхальное яйцо: localStorage
   useEffect(() => {
     try {
-      if (localStorage.getItem('petr-easter') === 'found' && !getFoundEggs().includes('egg_17')) {
-        if (findEgg('egg_17')) {
+      if (localStorage.getItem('petr-easter') === 'found' && !getFoundEggs().includes('egg_16')) {
+        if (findEgg('egg_16')) {
           fireConfetti()
           setXP(() => addXP(XP_REWARDS.easterEgg))
         }

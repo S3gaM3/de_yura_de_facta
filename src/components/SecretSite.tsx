@@ -68,11 +68,11 @@ export function SecretSite({ onBack, onUnlock }: SecretSiteProps) {
       case 'path':
         return <ChoosePathSecret onBack={back} onComplete={() => onUnlock('secret_4')} /> // path_done
       case 'memory':
-        return <MemoryGame onBack={back} onComplete={() => onUnlock('secret_31')} />
+        return <MemoryGame onBack={back} onComplete={() => onUnlock('secret_6')} />
       case 'snake':
-        return <SnakeGame onBack={back} onComplete={() => onUnlock('secret_32')} />
+        return <SnakeGame onBack={back} onComplete={() => onUnlock('secret_7')} />
       case 'reaction':
-        return <ReactionGame onBack={back} onComplete={() => onUnlock('secret_33')} />
+        return <ReactionGame onBack={back} onComplete={() => onUnlock('secret_8')} />
       default:
         return null
     }
