@@ -150,8 +150,8 @@ export function calculateLevel(stats: PlayerStats): number {
 export function updateEnergy(stats: PlayerStats): PlayerStats {
   const now = Date.now()
   const timePassed = now - stats.lastEnergyUpdate
-  const energyPerMinute = 0.5 // 1 энергия в 2 минуты
-  const energyGained = Math.floor((timePassed / 60000) * energyPerMinute)
+  const energyPerSecond = 5 // 5 единиц энергии в секунду
+  const energyGained = Math.floor((timePassed / 1000) * energyPerSecond)
   
   if (energyGained > 0) {
     const newEnergy = Math.min(stats.energy + energyGained, stats.maxEnergy)

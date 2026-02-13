@@ -284,7 +284,7 @@ export function LegalGame() {
   }
 
   const energyPercent = (stats.energy / stats.maxEnergy) * 100
-  const timeToFullEnergy = Math.ceil((stats.maxEnergy - stats.energy) * 2) // минут
+  const timeToFullEnergy = Math.ceil((stats.maxEnergy - stats.energy) / 5) // секунд
 
   return (
     <div className="legal-game">
@@ -316,7 +316,7 @@ export function LegalGame() {
         </div>
         {stats.energy < stats.maxEnergy && (
           <p className="legal-game__energy-time">
-            Восстановление через {timeToFullEnergy} мин
+            Восстановление через {timeToFullEnergy} сек
           </p>
         )}
       </div>
