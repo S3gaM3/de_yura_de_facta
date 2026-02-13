@@ -11,45 +11,48 @@
 .countdown__today {
   text-align: center;
   font-size: 1.5rem;
-  color: var(--pink);
-  font-weight: 600;
+  color: var(--accent);
+  font-weight: 700;
 }
 
 .countdown__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
-  max-width: 480px;
+  max-width: 560px;
   margin: 0 auto;
 }
 
 .countdown__item {
-  background: var(--bg-card);
-  border: 1px solid rgba(249, 168, 212, 0.15);
-  border-radius: 12px;
-  padding: 1.25rem;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
   text-align: center;
-  transition: border-color 0.2s, transform 0.2s;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px var(--shadow);
 }
 
 .countdown__item:hover {
-  border-color: rgba(249, 168, 212, 0.35);
-  transform: translateY(-2px);
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px var(--shadow-hover);
 }
 
 .countdown__value {
   display: block;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 700;
-  color: var(--cream);
+  color: var(--accent);
 }
 
 .countdown__label {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  font-weight: 600;
 }
 
 @media (max-width: 400px) {

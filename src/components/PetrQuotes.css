@@ -10,24 +10,25 @@
 }
 
 .petr-quotes__box {
-  padding: 2rem;
-  background: var(--bg-card);
-  border: 2px solid rgba(249, 168, 212, 0.3);
-  border-radius: 16px;
+  padding: 2.5rem;
+  background: #ffffff;
+  border: 2px solid var(--border);
+  border-radius: 12px;
   min-height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
+  box-shadow: 0 4px 16px var(--shadow);
 }
 
 .petr-quotes__text {
   font-size: 1.5rem;
   font-style: italic;
-  color: var(--pink);
-  font-weight: 500;
-  line-height: 1.6;
+  color: var(--accent);
+  font-weight: 600;
+  line-height: 1.7;
   animation: quoteFade 0.4s ease-out;
 }
 
@@ -45,15 +46,17 @@
 .petr-quotes__btn {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
-  color: var(--pink);
+  color: var(--accent);
   background: transparent;
-  border: 1px solid var(--pink);
+  border: 2px solid var(--accent);
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  transition: background 0.2s, transform 0.2s, color 0.2s;
+  font-weight: 600;
 }
 
 .petr-quotes__btn:hover {
-  background: rgba(249, 168, 212, 0.15);
+  background: var(--accent);
+  color: #ffffff;
   transform: translateY(-2px);
 }

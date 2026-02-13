@@ -16,34 +16,36 @@
 }
 
 .fun-facts__card {
-  padding: 1.5rem;
-  background: var(--bg-card);
-  border: 1px solid rgba(249, 168, 212, 0.3);
+  padding: 1.75rem;
+  background: #ffffff;
+  border: 1px solid var(--border);
   border-radius: 12px;
   cursor: pointer;
   transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px var(--shadow);
 }
 
 .fun-facts__card:hover {
   transform: translateY(-4px);
   border-color: var(--accent);
-  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2);
+  box-shadow: 0 8px 24px var(--shadow-hover);
 }
 
 .fun-facts__card--open {
-  border-color: var(--pink);
-  box-shadow: 0 4px 16px rgba(225, 29, 72, 0.3);
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(0, 102, 204, 0.2);
 }
 
 .fun-facts__title {
-  font-size: 1.1rem;
-  color: var(--pink);
-  margin-bottom: 0.5rem;
+  font-size: 1.15rem;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  font-weight: 700;
 }
 
 .fun-facts__text {
   color: var(--cream);
-  line-height: 1.6;
+  line-height: 1.7;
   margin-top: 0.75rem;
   animation: fadeIn 0.3s ease-out;
 }

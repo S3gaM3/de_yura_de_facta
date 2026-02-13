@@ -1,19 +1,12 @@
 import { useState } from 'react'
 import './ValentineCard.css'
 
-type ValentineCardProps = {
-  onConfetti: () => void
-  onOpen?: () => void
-}
-
-export function ValentineCard({ onConfetti, onOpen }: ValentineCardProps) {
+export function ValentineCard() {
   const [opened, setOpened] = useState(false)
 
   const handleOpen = () => {
     if (!opened) {
       setOpened(true)
-      onConfetti()
-      onOpen?.()
     }
   }
 

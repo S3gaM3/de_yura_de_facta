@@ -1,16 +1,23 @@
 .gallery__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  max-width: 560px;
+  gap: 1.5rem;
+  max-width: 600px;
   margin: 0 auto;
 }
 
 .gallery__item {
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(249, 168, 212, 0.15);
-  background: var(--bg-card);
+  border: 2px solid var(--border);
+  background: #ffffff;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.gallery__item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px var(--shadow-hover);
 }
 
 .gallery__img {

@@ -1,0 +1,118 @@
+.quests-panel {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.quests-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.quests-panel__header h2 {
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.quests-panel__back {
+  padding: 0.5rem 1rem;
+  background: #e0e0e0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.quests-panel__back:hover {
+  background: #d0d0d0;
+}
+
+.quests-panel__section {
+  margin-bottom: 2rem;
+}
+
+.quests-panel__section h3 {
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+  font-size: 1.2rem;
+}
+
+.quests-panel__quest {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.quests-panel__quest--completed {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+
+.quests-panel__quest-info {
+  flex: 1;
+}
+
+.quests-panel__quest-info h4 {
+  margin: 0 0 0.5rem 0;
+  color: #1a1a1a;
+}
+
+.quests-panel__quest-info p {
+  margin: 0.25rem 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.quests-panel__quest-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.quests-panel__quest-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.quests-panel__quest-progress-bar > div {
+  height: 100%;
+  background: #2563eb;
+  transition: width 0.3s;
+}
+
+.quests-panel__quest-reward {
+  margin-top: 0.5rem;
+  color: #10b981;
+  font-weight: 500;
+}
+
+.quests-panel__quest-claim {
+  padding: 0.5rem 1rem;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.quests-panel__quest-claim:hover {
+  background: #059669;
+}
+
+.quests-panel__empty {
+  text-align: center;
+  color: #6b7280;
+  padding: 2rem;
+}

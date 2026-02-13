@@ -1,13 +1,18 @@
 :root {
-  --bg: #0d0a0c;
-  --bg-card: #1a1218;
-  --accent: #e11d48;
-  --accent-soft: #f43f5e;
-  --pink: #f9a8d4;
-  --cream: #fef3f7;
-  --muted: #a78b9a;
-  --font-display: 'Unbounded', sans-serif;
-  --font-body: 'Manrope', sans-serif;
+  --bg: #ffffff;
+  --bg-card: #f8f9fa;
+  --bg-secondary: #f0f2f5;
+  --accent: #0066cc;
+  --accent-soft: #0052a3;
+  --accent-hover: #004d99;
+  --pink: #0066cc;
+  --cream: #1a1a1a;
+  --muted: #6c757d;
+  --border: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-hover: rgba(0, 0, 0, 0.15);
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 *,
@@ -28,6 +33,7 @@ body {
   -webkit-font-smoothing: antialiased;
   position: relative;
   min-height: 100vh;
+  background: var(--bg);
 }
 
 body::before {
@@ -35,18 +41,8 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -2;
-  background:
-    linear-gradient(
-      135deg,
-      #0f0406 0%,
-      #1a0508 20%,
-      #2d0a0f 40%,
-      #1f080c 60%,
-      #260a10 80%,
-      #0f0406 100%
-    );
-  background-size: 400% 400%;
-  animation: roomShift 18s ease-in-out infinite;
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+  pointer-events: none;
 }
 
 body::after {
@@ -54,35 +50,10 @@ body::after {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(
-    ellipse 120% 80% at 30% 20%,
-    rgba(120, 20, 40, 0.25) 0%,
-    transparent 50%
-  );
-  background-size: 200% 200%;
-  animation: roomGlow 22s ease-in-out infinite;
+  background: 
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0, 102, 204, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(0, 102, 204, 0.02) 0%, transparent 50%);
   pointer-events: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body::before {
-    animation: none;
-    background: #150608;
-  }
-  body::after {
-    animation: none;
-    opacity: 0.5;
-  }
-}
-
-@keyframes roomShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-@keyframes roomGlow {
-  0%, 100% { background-position: 20% 30%; }
-  50% { background-position: 80% 70%; }
 }
 
 #root {
@@ -92,7 +63,9 @@ body::after {
 
 h1, h2, h3 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.01em;
 }
 
 button {
@@ -101,47 +74,53 @@ button {
 }
 
 a {
-  color: var(--accent-soft);
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
 }
 
 /* --- Достижения: темы --- */
 [data-achievement-theme="soft"] {
-  --bg: #0f080c;
-  --accent: #e11d48;
-  --accent-soft: #f472b6;
-  --pink: #fbcfe8;
-  --cream: #fef7f9;
+  --bg: #fafbfc;
+  --bg-card: #f0f2f5;
+  --accent: #0066cc;
+  --accent-soft: #0052a3;
+  --pink: #0066cc;
+  --cream: #1a1a1a;
 }
 [data-achievement-theme="gold"] {
-  --bg: #0d0c08;
-  --bg-card: #1a1812;
-  --accent: #ca8a04;
-  --accent-soft: #eab308;
-  --pink: #fde047;
-  --cream: #fefce8;
-  --muted: #a8a29e;
+  --bg: #fffef8;
+  --bg-card: #faf9f0;
+  --accent: #d4af37;
+  --accent-soft: #b8941f;
+  --pink: #d4af37;
+  --cream: #1a1a1a;
+  --muted: #8b7d5a;
 }
 [data-achievement-theme="gold"] body::before {
-  background: linear-gradient(135deg, #1a1508 0%, #2d2208 30%, #1f1a08 60%, #262008 100%);
-  background-size: 400% 400%;
+  background: linear-gradient(180deg, #fffef8 0%, #faf9f0 100%);
 }
 [data-achievement-theme="cool"] {
-  --bg: #0a0d12;
-  --bg-card: #121820;
-  --accent: #38bdf8;
-  --accent-soft: #7dd3fc;
-  --pink: #a5b4fc;
-  --cream: #f0f9ff;
-  --muted: #94a3b8;
+  --bg: #f0f7ff;
+  --bg-card: #e6f2ff;
+  --accent: #0066cc;
+  --accent-soft: #0052a3;
+  --pink: #0066cc;
+  --cream: #1a1a1a;
+  --muted: #5a7fa3;
 }
 [data-achievement-theme="cool"] body::before {
-  background: linear-gradient(135deg, #0a0d12 0%, #0f172a 30%, #1e293b 60%, #0f172a 100%);
-  background-size: 400% 400%;
+  background: linear-gradient(180deg, #f0f7ff 0%, #e6f2ff 100%);
 }
 
 /* --- Достижения: эффекты --- */
 body.effect-hearts-more .falling-hearts__item {
-  opacity: 0.12 !important;
+  opacity: 0.08 !important;
 }
 body.effect-sparkle .app section .facts__item:hover,
 body.effect-sparkle .app section .valentine__card:hover,
@@ -149,31 +128,30 @@ body.effect-sparkle .app section .contract__box:hover {
   animation: sparkle-shine 2s ease-in-out;
 }
 @keyframes sparkle-shine {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.08); }
+  0%, 100% { box-shadow: 0 2px 8px var(--shadow); }
+  50% { box-shadow: 0 4px 16px var(--shadow-hover); }
 }
 body.effect-glow-cards .app section .facts__item--open,
 body.effect-glow-cards .app section .valentine__card,
 body.effect-glow-cards .app section .contract__box {
-  box-shadow: 0 0 20px rgba(249, 168, 212, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 102, 204, 0.15);
 }
 body.effect-stars-bg::after {
-  background-image: radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.4), transparent),
-    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.3), transparent),
-    radial-gradient(2px 2px at 50px 160px, rgba(255,255,255,0.35), transparent);
+  background-image: radial-gradient(2px 2px at 20px 30px, rgba(0, 102, 204, 0.1), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(0, 102, 204, 0.08), transparent),
+    radial-gradient(2px 2px at 50px 160px, rgba(0, 102, 204, 0.09), transparent);
   background-size: 200% 200%;
   background-repeat: repeat;
-  animation: roomGlow 30s ease-in-out infinite;
 }
 body.effect-rainbow-hearts .falling-hearts__item {
   animation-duration: 12s !important;
 }
 body.effect-rainbow-hearts .falling-hearts__item:nth-child(odd) {
-  color: #f472b6;
+  color: #0066cc;
 }
 body.effect-rainbow-hearts .falling-hearts__item:nth-child(3n) {
-  color: #a78bfa;
+  color: #0052a3;
 }
 body.effect-rainbow-hearts .falling-hearts__item:nth-child(5n) {
-  color: #34d399;
+  color: #004080;
 }

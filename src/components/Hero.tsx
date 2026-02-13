@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react'
 import './Hero.css'
 
-type HeroProps = {
-  onHeartClick: () => void
-}
-
-export function Hero({ onHeartClick }: HeroProps) {
+export function Hero() {
   const [heartScale, setHeartScale] = useState(1)
   const [photoError, setPhotoError] = useState(false)
   const [photoExt, setPhotoExt] = useState<'jpg' | 'png'>('jpg')
@@ -35,11 +31,7 @@ export function Hero({ onHeartClick }: HeroProps) {
           <span
             className="hero__heart"
             style={{ transform: `scale(${heartScale})` }}
-            onClick={onHeartClick}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => e.key === 'Enter' && onHeartClick()}
-            aria-label="Нажми на сердечко"
+            aria-label="Сердечко"
           >
             ♥
           </span>

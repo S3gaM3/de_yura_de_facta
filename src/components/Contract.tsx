@@ -1,44 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
-import { findEgg, getFoundEggs } from '../lib/easterEggs'
-import { addXP, XP_REWARDS } from '../lib/xp'
-import confetti from 'canvas-confetti'
+import { useState } from 'react'
 import './Contract.css'
 
-function fireConfetti() {
-  confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } })
-}
-
-type ContractProps = {
-  onConfetti: () => void
-  onSign?: () => void
-}
-
-export function Contract({ onConfetti, onSign }: ContractProps) {
+export function Contract() {
   const [signed, setSigned] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const startTimeRef = useRef<number | null>(null)
-
-  useEffect(() => {
-    startTimeRef.current = Date.now()
-    timerRef.current = setTimeout(() => {
-      if (!signed && !getFoundEggs().includes('egg_6')) {
-        if (findEgg('egg_6')) {
-          fireConfetti()
-          addXP(XP_REWARDS.easterEgg)
-        }
-      }
-    }, 30000)
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current)
-    }
-  }, [signed])
 
   const handleSign = () => {
     if (!signed) {
       setSigned(true)
-      if (timerRef.current) clearTimeout(timerRef.current)
-      onConfetti()
-      onSign?.()
     }
   }
 
