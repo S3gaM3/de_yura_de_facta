@@ -1,5 +1,4 @@
 import { PlayerStats } from '../../lib/legalGame'
-import { updateQuestProgress } from '../../lib/legalQuests'
 import './QuestsPanel.css'
 
 interface QuestsPanelProps {
@@ -10,13 +9,16 @@ interface QuestsPanelProps {
 
 export function QuestsPanel({ stats, onStatsChange, onBack }: QuestsPanelProps) {
   const claimReward = (questId: string) => {
-    const quest = stats.activeQuests.find(q => q.id === questId)
+    const quest = (stats.activeQuests || []).find(q => q.id === questId)
     if (!quest || !quest.completed) return
+
+    // Проверяем, не был ли уже получен этот квест
+    if ((stats.completedQuests || []).includes(questId)) return
 
     let newStats: PlayerStats = {
       ...stats,
-      completedQuests: [...stats.completedQuests, questId],
-      activeQuests: stats.activeQuests.filter(q => q.id !== questId),
+      completedQuests: [...(stats.completedQuests || []), questId],
+      activeQuests: (stats.activeQuests || []).filter(q => q.id !== questId),
     }
 
     if (quest.reward.type === 'coins') {
@@ -28,9 +30,9 @@ export function QuestsPanel({ stats, onStatsChange, onBack }: QuestsPanelProps) 
     onStatsChange(newStats)
   }
 
-  const storyQuests = stats.activeQuests.filter(q => q.type === 'story')
-  const dailyQuests = stats.activeQuests.filter(q => q.type === 'daily')
-  const specialQuests = stats.activeQuests.filter(q => q.type === 'special')
+  const storyQuests = (stats.activeQuests || []).filter(q => q.type === 'story')
+  const dailyQuests = (stats.activeQuests || []).filter(q => q.type === 'daily')
+  const specialQuests = (stats.activeQuests || []).filter(q => q.type === 'special')
 
   return (
     <div className="quests-panel">
@@ -142,7 +144,7 @@ export function QuestsPanel({ stats, onStatsChange, onBack }: QuestsPanelProps) 
         </div>
       )}
 
-      {stats.activeQuests.length === 0 && (
+      {(stats.activeQuests || []).length === 0 && (
         <div className="quests-panel__empty">
           <p>Нет активных заданий</p>
           <p style={{ fontSize: '0.9rem', color: '#6b7280', marginTop: '0.5rem' }}>

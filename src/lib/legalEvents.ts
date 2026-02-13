@@ -49,9 +49,11 @@ export function isEventActive(event: RandomEvent | null): boolean {
 }
 
 export function applyEventEffect(event: RandomEvent | null, baseValue: number): number {
-  if (!isEventActive(event)) return baseValue
+  if (!event || !isEventActive(event)) return baseValue
   
-  switch (event.effect) {
+  // TypeScript теперь знает, что event не null после проверки
+  const activeEvent = event
+  switch (activeEvent.effect) {
     case 'double_xp':
       return baseValue * 2
     case 'bonus_rewards':

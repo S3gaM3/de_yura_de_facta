@@ -13,7 +13,7 @@ export function UpgradesPanel({ stats, onStatsChange, onBack }: UpgradesPanelPro
     const upgrade = AVAILABLE_UPGRADES.find(u => u.id === upgradeId)
     if (!upgrade) return
 
-    const currentUpgrade = stats.upgrades.find(u => u.id === upgradeId)
+    const currentUpgrade = (stats.upgrades || []).find(u => u.id === upgradeId)
     const currentLevel = currentUpgrade?.level || 0
     
     if (currentLevel >= upgrade.maxLevel) return
@@ -21,7 +21,7 @@ export function UpgradesPanel({ stats, onStatsChange, onBack }: UpgradesPanelPro
     const cost = upgrade.cost * (currentLevel + 1)
     if (stats.coins < cost) return
 
-    const updatedUpgrades = [...stats.upgrades]
+    const updatedUpgrades = [...(stats.upgrades || [])]
     const existingIndex = updatedUpgrades.findIndex(u => u.id === upgradeId)
     
     if (existingIndex >= 0) {
@@ -44,7 +44,7 @@ export function UpgradesPanel({ stats, onStatsChange, onBack }: UpgradesPanelPro
   }
 
   const getUpgradeLevel = (upgradeId: string): number => {
-    const upgrade = stats.upgrades.find(u => u.id === upgradeId)
+    const upgrade = (stats.upgrades || []).find(u => u.id === upgradeId)
     return upgrade?.level || 0
   }
 
@@ -77,7 +77,7 @@ export function UpgradesPanel({ stats, onStatsChange, onBack }: UpgradesPanelPro
             <div className="upgrades-panel__list">
               {upgrades.map(upgrade => {
                 const level = getUpgradeLevel(upgrade.id)
-                const canAfford = canAffordUpgrade(stats, upgrade)
+                const canAfford = canAffordUpgrade({ coins: stats.coins, upgrades: stats.upgrades || [] }, upgrade)
                 const isMaxLevel = level >= upgrade.maxLevel
 
                 return (

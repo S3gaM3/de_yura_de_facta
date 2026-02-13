@@ -13,12 +13,12 @@ export function OfficePanel({ stats, onStatsChange, onBack }: OfficePanelProps) 
     const upgrade = OFFICE_UPGRADES.find(u => u.id === upgradeId)
     if (!upgrade) return
 
-    const existingUpgrade = stats.officeUpgrades.find(u => u.id === upgradeId)
+    const existingUpgrade = (stats.officeUpgrades || []).find(u => u.id === upgradeId)
     if (existingUpgrade?.purchased) return
 
     if (stats.coins < upgrade.cost) return
 
-    const updatedOfficeUpgrades = [...stats.officeUpgrades]
+    const updatedOfficeUpgrades = [...(stats.officeUpgrades || [])]
     const existingIndex = updatedOfficeUpgrades.findIndex(u => u.id === upgradeId)
     
     if (existingIndex >= 0) {
@@ -41,7 +41,7 @@ export function OfficePanel({ stats, onStatsChange, onBack }: OfficePanelProps) 
   }
 
   const isPurchased = (upgradeId: string): boolean => {
-    const upgrade = stats.officeUpgrades.find(u => u.id === upgradeId)
+    const upgrade = (stats.officeUpgrades || []).find(u => u.id === upgradeId)
     return upgrade?.purchased || false
   }
 

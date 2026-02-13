@@ -111,8 +111,19 @@ export function loadStats(): PlayerStats {
     if (saved) {
       const parsed = JSON.parse(saved)
       const stats = { ...DEFAULT_STATS, ...parsed }
+      // Убеждаемся, что все поля присутствуют
+      const completeStats: PlayerStats = {
+        ...DEFAULT_STATS,
+        ...stats,
+        // Объединяем массивы правильно
+        upgrades: stats.upgrades || [],
+        officeUpgrades: stats.officeUpgrades || [],
+        activeQuests: stats.activeQuests || [],
+        completedQuests: stats.completedQuests || [],
+        unlockedGames: stats.unlockedGames || DEFAULT_STATS.unlockedGames,
+      }
       // Обновляем энергию при загрузке
-      return updateEnergy(stats)
+      return updateEnergy(completeStats)
     }
   } catch {
     // ignore
@@ -160,7 +171,7 @@ export function getMaxEnergy(level: number): number {
 }
 
 // Получение стоимости действия
-export function getActionCost(action: 'strength' | 'agility' | 'intellect'): number {
+export function getActionCost(_action: 'strength' | 'agility' | 'intellect'): number {
   return 1 // Базовая стоимость
 }
 

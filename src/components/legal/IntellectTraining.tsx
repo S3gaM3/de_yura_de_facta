@@ -49,7 +49,7 @@ export function IntellectTraining({ stats, onXPGain, onBack }: IntellectTraining
     if (questions.length > 0 && !currentQuestion) {
       loadNextQuestion()
     }
-  }, [questions.length])
+  }, [questions.length, currentQuestion])
 
   const handleAnswer = (index: number) => {
     if (selectedAnswer !== null || !currentQuestion) return

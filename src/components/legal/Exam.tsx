@@ -5,14 +5,14 @@ import './Exam.css'
 
 type ExamProps = {
   examLevel: number
-  stats: PlayerStats
+  stats: PlayerStats // Может использоваться для будущих проверок
   onComplete: (passed: boolean) => void
   onBack: () => void
 }
 
 type ExamStage = 'strength' | 'agility' | 'intellect' | 'complete'
 
-export function Exam({ examLevel, stats, onComplete, onBack }: ExamProps) {
+export function Exam({ examLevel, stats: _stats, onComplete, onBack }: ExamProps) {
   const [stage, setStage] = useState<ExamStage>('strength')
   const [strengthClicks, setStrengthClicks] = useState(0)
   const [strengthTimeLeft, setStrengthTimeLeft] = useState(0)

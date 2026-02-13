@@ -148,7 +148,7 @@ export function PixelSnake() {
   const [correct, setCorrect] = useState<boolean | null>(null)
   const [trapped, setTrapped] = useState(false)
   const [trapTimeLeft, setTrapTimeLeft] = useState(150)
-  const [speed, setSpeed] = useState(0.008)
+  const [speed] = useState(0.008)
   const [score, setScore] = useState(0)
   const trapStartTimeRef = useRef<number | null>(null)
   const animationFrameRef = useRef<number>()
@@ -277,7 +277,7 @@ export function PixelSnake() {
           setTrapped(true)
           trapStartTimeRef.current = Date.now()
           setTrapTimeLeft(150)
-          const timer = window.setTimeout(() => {
+          window.setTimeout(() => {
             setTrapped(false)
             trapStartTimeRef.current = null
             setTrapTimeLeft(150)

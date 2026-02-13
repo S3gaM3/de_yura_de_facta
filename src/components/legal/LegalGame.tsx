@@ -40,33 +40,37 @@ export function LegalGame() {
   // Обновление разблокированных игр
   useEffect(() => {
     const unlocked = getUnlockedGames(stats.level)
-    if (JSON.stringify(unlocked) !== JSON.stringify(stats.unlockedGames)) {
+    const currentUnlocked = stats.unlockedGames || { strength: [], agility: [], intellect: [] }
+    if (JSON.stringify(unlocked) !== JSON.stringify(currentUnlocked)) {
       setStats(prev => ({ ...prev, unlockedGames: unlocked }))
     }
-  }, [stats.level])
+  }, [stats.level, stats.unlockedGames])
 
   // Инициализация квестов
   useEffect(() => {
-    if (stats.activeQuests.length === 0) {
-      const storyQuests = STORY_QUESTS.filter(q => !stats.completedQuests.includes(q.id))
+    if ((stats.activeQuests || []).length === 0) {
+      const storyQuests = STORY_QUESTS.filter(q => !(stats.completedQuests || []).includes(q.id))
       const dailyQuests = generateDailyQuests()
       setStats(prev => ({
         ...prev,
         activeQuests: [...storyQuests, ...dailyQuests],
       }))
     }
-  }, [])
+  }, [stats.activeQuests?.length, stats.completedQuests])
 
   // Случайные события (раз в час с шансом 10%)
   useEffect(() => {
     const checkEvent = () => {
-      if (!stats.randomEvent || !isEventActive(stats.randomEvent)) {
-        const chance = Math.random()
-        if (chance < 0.1) { // 10% шанс
-          const event = getRandomEvent()
-          setStats(prev => ({ ...prev, randomEvent: event }))
+      setStats(prev => {
+        if (!prev.randomEvent || !isEventActive(prev.randomEvent)) {
+          const chance = Math.random()
+          if (chance < 0.1) { // 10% шанс
+            const event = getRandomEvent()
+            return { ...prev, randomEvent: event }
+          }
         }
-      }
+        return prev
+      })
     }
     const interval = setInterval(checkEvent, 60 * 60 * 1000) // Проверка каждый час
     checkEvent() // Проверка сразу
@@ -106,34 +110,52 @@ export function LegalGame() {
       const newXP = currentXP + xp
       
       // Обновляем квесты
-      const questUpdates: PlayerStats['activeQuests'] = updated.activeQuests.map(quest => {
+      const questUpdates: PlayerStats['activeQuests'] = (updated.activeQuests || []).map(quest => {
         if (quest.completed) return quest
         
-        if (stat === 'strength' && (quest.id.includes('strength') || quest.id.includes('сил'))) {
+        // Более надежная проверка квестов
+        const questNameLower = quest.name.toLowerCase()
+        const questDescLower = quest.description.toLowerCase()
+        
+        if (stat === 'strength' && (
+          quest.id.includes('strength') || 
+          questNameLower.includes('сил') || 
+          questDescLower.includes('сил')
+        )) {
           return updateQuestProgress(quest, 1)
         }
-        if (stat === 'agility' && (quest.id.includes('agility') || quest.id.includes('ловк'))) {
+        if (stat === 'agility' && (
+          quest.id.includes('agility') || 
+          quest.id.includes('ловк') ||
+          questNameLower.includes('ловк') ||
+          questDescLower.includes('ловк')
+        )) {
           return updateQuestProgress(quest, 1)
         }
-        if (stat === 'intellect' && (quest.id.includes('intellect') || quest.id.includes('интеллект'))) {
+        if (stat === 'intellect' && (
+          quest.id.includes('intellect') || 
+          quest.id.includes('интеллект') ||
+          questNameLower.includes('интеллект') ||
+          questDescLower.includes('интеллект') ||
+          questDescLower.includes('вопрос')
+        )) {
           return updateQuestProgress(quest, 1)
         }
         return quest
       })
       
       // Проверяем выполненные квесты
-      const completedQuests = questUpdates.filter(q => q.completed)
+      const completedQuests = questUpdates.filter(q => q.completed && !(updated.completedQuests || []).includes(q.id))
       let newCoins = updated.coins
-      const newCompletedQuests = [...updated.completedQuests]
+      let newEnergy = updated.energy
+      const newCompletedQuests = [...(updated.completedQuests || [])]
       
       completedQuests.forEach(quest => {
-        if (!newCompletedQuests.includes(quest.id)) {
-          newCompletedQuests.push(quest.id)
-          if (quest.reward.type === 'coins') {
-            newCoins += quest.reward.amount
-          } else if (quest.reward.type === 'energy') {
-            updated.energy = Math.min(updated.maxEnergy, updated.energy + quest.reward.amount)
-          }
+        newCompletedQuests.push(quest.id)
+        if (quest.reward.type === 'coins') {
+          newCoins += quest.reward.amount
+        } else if (quest.reward.type === 'energy') {
+          newEnergy = Math.min(updated.maxEnergy, newEnergy + quest.reward.amount)
         }
       })
       
@@ -144,6 +166,7 @@ export function LegalGame() {
           activeQuests: questUpdates,
           completedQuests: newCompletedQuests,
           coins: newCoins,
+          energy: newEnergy,
         }
         if (stat === 'strength') result.strengthXP = newXP - required
         else if (stat === 'agility') result.agilityXP = newXP - required
@@ -156,6 +179,7 @@ export function LegalGame() {
         activeQuests: questUpdates,
         completedQuests: newCompletedQuests,
         coins: newCoins,
+        energy: newEnergy,
       }
       if (stat === 'strength') result.strengthXP = newXP
       else if (stat === 'agility') result.agilityXP = newXP
