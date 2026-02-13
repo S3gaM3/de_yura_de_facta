@@ -34,8 +34,10 @@ export function SecretSite({ onBack, onUnlock }: SecretSiteProps) {
   const [, setQuizCount] = useState(0)
 
   useEffect(() => {
+    // Разблокируем достижение только один раз при входе
     onUnlock('secret_1') // enter_secret
-  }, [onUnlock])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Пустой массив зависимостей - выполняется только при монтировании
 
   const handleQuizComplete = useCallback(() => {
     onUnlock('secret_2') // quiz_done

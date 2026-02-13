@@ -9,66 +9,141 @@ type MathProblem = {
   options: number[]
 }
 
-// Генерация уравнений уровня 9 класса
+// Генерация упрощенных вопросов из школьной программы
 function generateMathProblem(): MathProblem {
-  const type = Math.floor(Math.random() * 5)
+  const type = Math.floor(Math.random() * 15)
   let question = ''
   let answer = 0
 
   switch (type) {
     case 0: {
-      // Квадратное уравнение: x² + bx + c = 0 (упрощенное)
-      const root1 = Math.floor(Math.random() * 10) - 5
-      const root2 = Math.floor(Math.random() * 10) - 5
-      const b = -(root1 + root2)
-      const c = root1 * root2
-      answer = root1
-      question = `Решите: x² ${b >= 0 ? '+' : ''}${b}x ${c >= 0 ? '+' : ''}${c} = 0. Найдите один из корней.`
+      // Простая арифметика
+      const a = Math.floor(Math.random() * 20) + 1
+      const b = Math.floor(Math.random() * 20) + 1
+      answer = a + b
+      question = `Сколько будет ${a} + ${b}?`
       break
     }
     case 1: {
-      // Линейное уравнение
-      const x = Math.floor(Math.random() * 20) - 10
-      const a = Math.floor(Math.random() * 5) + 1
-      const b = Math.floor(Math.random() * 10) - 5
-      answer = x
-      const result = a * x + b
-      question = `Решите: ${a}x ${b >= 0 ? '+' : ''}${b} = ${result}. Найдите x.`
+      // Вычитание
+      const a = Math.floor(Math.random() * 30) + 10
+      const b = Math.floor(Math.random() * 10) + 1
+      answer = a - b
+      question = `Сколько будет ${a} - ${b}?`
       break
     }
     case 2: {
-      // Система уравнений (упрощенная)
-      const x = Math.floor(Math.random() * 10) + 1
-      const y = Math.floor(Math.random() * 10) + 1
-      answer = x + y
-      question = `Решите систему: x + y = ${answer}, x - y = ${x - y}. Найдите x + y.`
+      // Умножение
+      const a = Math.floor(Math.random() * 10) + 1
+      const b = Math.floor(Math.random() * 10) + 1
+      answer = a * b
+      question = `Сколько будет ${a} × ${b}?`
       break
     }
     case 3: {
-      // Степени
-      const base = Math.floor(Math.random() * 5) + 2
-      const power = Math.floor(Math.random() * 3) + 2
-      answer = Math.pow(base, power)
-      question = `Вычислите: ${base}^${power}`
+      // Деление
+      const b = Math.floor(Math.random() * 9) + 2
+      const answer = Math.floor(Math.random() * 10) + 1
+      const a = b * answer
+      question = `Сколько будет ${a} ÷ ${b}?`
       break
     }
     case 4: {
-      // Логарифмы (упрощенные)
-      const value = Math.floor(Math.random() * 8) + 1
-      answer = value
-      question = `Решите: log₂(${Math.pow(2, value)}) = ?`
+      // Простое уравнение
+      const x = Math.floor(Math.random() * 20) + 1
+      const a = Math.floor(Math.random() * 5) + 1
+      answer = x
+      question = `Решите: ${a}x = ${a * x}. Найдите x.`
+      break
+    }
+    case 5: {
+      // История: Год основания Москвы
+      answer = 1147
+      question = `В каком году была основана Москва?`
+      break
+    }
+    case 6: {
+      // История: Год начала ВОВ
+      answer = 1941
+      question = `В каком году началась Великая Отечественная война?`
+      break
+    }
+    case 7: {
+      // География: Количество океанов
+      answer = 5
+      question = `Сколько океанов на Земле?`
+      break
+    }
+    case 8: {
+      // География: Количество материков
+      answer = 6
+      question = `Сколько материков на Земле?`
+      break
+    }
+    case 9: {
+      // Биология: Количество хромосом у человека
+      answer = 46
+      question = `Сколько хромосом у человека?`
+      break
+    }
+    case 10: {
+      // Физика: Скорость света (округленно)
+      answer = 300000
+      question = `Скорость света в вакууме (км/с, округленно)?`
+      break
+    }
+    case 11: {
+      // Литература: Количество томов "Войны и мира"
+      answer = 4
+      question = `Сколько томов в романе "Война и мир" Толстого?`
+      break
+    }
+    case 12: {
+      // Химия: Атомный номер кислорода
+      answer = 8
+      question = `Какой атомный номер у кислорода?`
+      break
+    }
+    case 13: {
+      // Математика: Площадь квадрата
+      const side = Math.floor(Math.random() * 10) + 1
+      answer = side * side
+      question = `Площадь квадрата со стороной ${side} равна?`
+      break
+    }
+    case 14: {
+      // Математика: Периметр квадрата
+      const side = Math.floor(Math.random() * 10) + 1
+      answer = side * 4
+      question = `Периметр квадрата со стороной ${side} равен?`
       break
     }
     default: {
-      answer = Math.floor(Math.random() * 20) + 1
-      question = `Вычислите: ${answer * 2} / 2`
+      // Простая арифметика по умолчанию
+      const a = Math.floor(Math.random() * 15) + 1
+      const b = Math.floor(Math.random() * 15) + 1
+      answer = a + b
+      question = `Сколько будет ${a} + ${b}?`
     }
   }
 
   // Генерируем варианты ответов
   const options = [answer]
   while (options.length < 4) {
-    const wrong = answer + Math.floor(Math.random() * 10) - 5
+    let wrong: number
+    if (answer < 100) {
+      // Для маленьких чисел
+      wrong = answer + Math.floor(Math.random() * 20) - 10
+      if (wrong < 0) wrong = Math.abs(wrong)
+    } else if (answer < 10000) {
+      // Для средних чисел (годы, хромосомы)
+      wrong = answer + Math.floor(Math.random() * 100) - 50
+      if (wrong < 0) wrong = Math.abs(wrong)
+    } else {
+      // Для больших чисел (скорость света)
+      wrong = answer + Math.floor(Math.random() * 100000) - 50000
+      if (wrong < 0) wrong = Math.abs(wrong)
+    }
     if (wrong !== answer && !options.includes(wrong)) {
       options.push(wrong)
     }
@@ -102,14 +177,12 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
   const trapStartTimeRef = useRef<number | null>(null)
   const animationFrameRef = useRef<number>()
   const snakeRef = useRef<HTMLDivElement>(null)
-  
-  // Загон в правом нижнем углу (100x100px)
-  const TRAP_ZONE = {
+  const trapZoneRef = useRef({
     x: typeof window !== 'undefined' ? window.innerWidth - 120 : 0,
-    y: typeof window !== 'undefined' ? window.innerHeight - 120 : 0,
+    y: typeof window !== 'undefined' ? 20 : 0, // Правый верхний угол
     width: 100,
     height: 100,
-  }
+  })
 
   // Блокировка скролла и взаимодействия при открытом модальном окне
   useEffect(() => {
@@ -155,11 +228,12 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
 
   // Проверка попадания в загон
   const checkTrapZone = (x: number, y: number): boolean => {
+    const zone = trapZoneRef.current
     return (
-      x >= TRAP_ZONE.x &&
-      x <= TRAP_ZONE.x + TRAP_ZONE.width &&
-      y >= TRAP_ZONE.y &&
-      y <= TRAP_ZONE.y + TRAP_ZONE.height
+      x >= zone.x &&
+      x <= zone.x + zone.width &&
+      y >= zone.y &&
+      y <= zone.y + zone.height
     )
   }
 
@@ -174,7 +248,7 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
 
       setPosition((prev) => {
         // Проверяем, попала ли змейка в загон
-        if (checkTrapZone(prev.x, prev.y) && !trapped) {
+        if (checkTrapZone(prev.x, prev.y)) {
           setTrapped(true)
           trapStartTimeRef.current = Date.now()
           setTrapTimeLeft(150)
@@ -217,11 +291,20 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current)
       }
+    }
+  }, [active, mousePos, showProblem, onCaught, trapped])
+
+  // Очистка таймера при размонтировании
+  useEffect(() => {
+    return () => {
       if (trapTimer) {
         clearTimeout(trapTimer)
       }
     }
-  }, [active, mousePos, showProblem, onCaught, trapped, trapTimer])
+  }, [trapTimer])
+
+  const reactivateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const answerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleAnswer = (option: number) => {
     if (selectedAnswer !== null) return
@@ -229,7 +312,11 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
     const isCorrect = option === problem?.answer
     setCorrect(isCorrect)
 
-    setTimeout(() => {
+    if (answerTimerRef.current) {
+      clearTimeout(answerTimerRef.current)
+    }
+
+    answerTimerRef.current = setTimeout(() => {
       if (isCorrect) {
         // Правильный ответ - начисляем XP и закрываем модальное окно
         const newXP = addXP(XP_REWARDS.mathProblemSolved)
@@ -240,10 +327,15 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
         setCorrect(null)
         // Змейка исчезает на 10 секунд
         setActive(false)
-        setTimeout(() => {
-          if (unlocked.length >= 5) {
+        if (reactivateTimerRef.current) {
+          clearTimeout(reactivateTimerRef.current)
+        }
+        reactivateTimerRef.current = setTimeout(() => {
+          if (unlocked.length >= 5 && !trapped) {
             setActive(true)
+            setPosition({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
           }
+          reactivateTimerRef.current = null
         }, 10000)
       } else {
         // Неправильный ответ - генерируем новую задачу, но модальное окно остается открытым
@@ -251,8 +343,30 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
         setCorrect(null)
         setProblem(generateMathProblem())
       }
+      answerTimerRef.current = null
     }, 2000)
   }
+
+  // Очистка таймеров при размонтировании
+  useEffect(() => {
+    return () => {
+      if (answerTimerRef.current) {
+        clearTimeout(answerTimerRef.current)
+      }
+      if (reactivateTimerRef.current) {
+        clearTimeout(reactivateTimerRef.current)
+      }
+    }
+  }, [])
+
+  // Очистка таймера реактивации при размонтировании
+  useEffect(() => {
+    return () => {
+      if (reactivateTimerRef.current) {
+        clearTimeout(reactivateTimerRef.current)
+      }
+    }
+  }, [])
 
   // Обновление таймера загона
   useEffect(() => {
@@ -275,8 +389,8 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
   // Обновление позиции загона при изменении размера окна
   useEffect(() => {
     const updateTrapZone = () => {
-      TRAP_ZONE.x = window.innerWidth - 120
-      TRAP_ZONE.y = window.innerHeight - 120
+      trapZoneRef.current.x = window.innerWidth - 120
+      trapZoneRef.current.y = 20 // Правый верхний угол
     }
     window.addEventListener('resize', updateTrapZone)
     return () => window.removeEventListener('resize', updateTrapZone)
@@ -290,10 +404,10 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
       <div
         className={`pixel-snake__trap ${trapped ? 'pixel-snake__trap--active' : ''}`}
         style={{
-          left: `${TRAP_ZONE.x}px`,
-          top: `${TRAP_ZONE.y}px`,
-          width: `${TRAP_ZONE.width}px`,
-          height: `${TRAP_ZONE.height}px`,
+          left: `${trapZoneRef.current.x}px`,
+          top: `${trapZoneRef.current.y}px`,
+          width: `${trapZoneRef.current.width}px`,
+          height: `${trapZoneRef.current.height}px`,
         }}
       >
         {trapped ? (

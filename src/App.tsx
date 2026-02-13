@@ -67,7 +67,7 @@ function getSecretPlace2Unlocked(): boolean {
 }
 
 export default function App() {
-  const { unlock, rewards } = useAchievements()
+  const { unlock, rewards, isUnlocked } = useAchievements()
   const [verified, setVerified] = useState(false)
   const [confettiFired, setConfettiFired] = useState(false)
   const [secretUnlocked, setSecretUnlocked] = useState(getSecretUnlocked)
@@ -213,28 +213,28 @@ export default function App() {
       const month = now.getMonth()
 
       // Ночной посетитель (после 23:00)
-      if (hour >= 23) {
+      if (hour >= 23 && !isUnlocked('main_19')) {
         onUnlock('main_19')
       }
       // Утренний (до 8:00)
-      if (hour < 8) {
+      if (hour < 8 && !isUnlocked('main_20')) {
         onUnlock('main_20')
       }
       // Пятничный (пятница = 5)
-      if (day === 5) {
+      if (day === 5 && !isUnlocked('main_21')) {
         onUnlock('main_21')
       }
       // Выходной (суббота = 6 или воскресенье = 0)
-      if (day === 0 || day === 6) {
+      if ((day === 0 || day === 6) && !isUnlocked('main_22')) {
         onUnlock('main_22')
       }
       // Пунктуальный (14 февраля)
-      if (date === 14 && month === 1) {
+      if (date === 14 && month === 1 && !isUnlocked('main_18')) {
         onUnlock('main_18')
       }
       // Повторный (проверка через localStorage)
       const lastVisit = localStorage.getItem('petr-last-visit')
-      if (lastVisit) {
+      if (lastVisit && !isUnlocked('main_25')) {
         onUnlock('main_25')
       }
       localStorage.setItem('petr-last-visit', Date.now().toString())
@@ -244,7 +244,7 @@ export default function App() {
     // Проверяем каждую минуту
     const interval = setInterval(checkTimeBasedAchievements, 60000)
     return () => clearInterval(interval)
-  }, [onUnlock])
+  }, [onUnlock, isUnlocked])
 
   return (
     <>

@@ -3,7 +3,9 @@ import type { Achievement } from './achievements'
 /** Генерация 100 достижений */
 function genAchievements(): Achievement[] {
   const list: Achievement[] = []
-  let id = 1
+  let mainId = 1
+  let secretId = 1
+  let comboId = 1
 
   // Основной сайт (40 достижений)
   const main = [
@@ -50,7 +52,7 @@ function genAchievements(): Achievement[] {
   ]
 
   main.forEach((a) => {
-    list.push({ id: `main_${id++}`, name: a.name, description: a.desc, reward: a.reward, zone: 'main' })
+    list.push({ id: `main_${mainId++}`, name: a.name, description: a.desc, reward: a.reward, zone: 'main' })
   })
 
   // Секретная зона (30 достижений)
@@ -88,7 +90,7 @@ function genAchievements(): Achievement[] {
   ]
 
   secret.forEach((a) => {
-    list.push({ id: `secret_${id++}`, name: a.name, description: a.desc, reward: a.reward, zone: 'secret' })
+    list.push({ id: `secret_${secretId++}`, name: a.name, description: a.desc, reward: a.reward, zone: 'secret' })
   })
 
   // Комбо и специальные (30 достижений)
@@ -126,7 +128,7 @@ function genAchievements(): Achievement[] {
   ]
 
   combo.forEach((a) => {
-    list.push({ id: `combo_${id++}`, name: a.name, description: a.desc, reward: a.reward, zone: a.zone as 'main' | 'secret' })
+    list.push({ id: `combo_${comboId++}`, name: a.name, description: a.desc, reward: a.reward, zone: a.zone as 'main' | 'secret' })
   })
 
   return list

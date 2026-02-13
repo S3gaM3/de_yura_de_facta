@@ -8,6 +8,8 @@ export function EasterEggHint() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | null = null
+    
     const checkHint = () => {
       const unlocked = getUnlocked()
       const count = unlocked.length
@@ -15,13 +17,16 @@ export function EasterEggHint() {
       if (newHint && newHint !== hint) {
         setHint(newHint)
         setVisible(true)
-        const timer = setTimeout(() => setVisible(false), 8000)
-        return () => clearTimeout(timer)
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => setVisible(false), 8000)
       }
     }
     checkHint()
     const interval = setInterval(checkHint, 2000)
-    return () => clearInterval(interval)
+    return () => {
+      clearInterval(interval)
+      if (timer) clearTimeout(timer)
+    }
   }, [hint])
 
   if (!hint || !visible) return null
