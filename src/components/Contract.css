@@ -1,0 +1,72 @@
+.contract__box {
+  background: var(--bg-card);
+  border: 1px solid rgba(249, 168, 212, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 0.9rem;
+}
+
+.contract__header {
+  background: rgba(225, 29, 72, 0.15);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid rgba(249, 168, 212, 0.2);
+}
+
+.contract__header strong {
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+}
+
+.contract__header span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.contract__body {
+  padding: 1.25rem 1.5rem;
+  color: var(--cream);
+  line-height: 1.7;
+}
+
+.contract__body p {
+  margin: 0 0 0.75rem;
+}
+
+.contract__body p:last-child {
+  margin-bottom: 0;
+}
+
+.contract__sign {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid rgba(249, 168, 212, 0.15);
+}
+
+.contract__btn {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--cream);
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.contract__btn:hover {
+  background: var(--accent-soft);
+  transform: scale(1.01);
+}
+
+.contract__signed {
+  display: block;
+  text-align: center;
+  color: var(--pink);
+  font-weight: 600;
+}

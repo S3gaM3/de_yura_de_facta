@@ -1,0 +1,50 @@
+.app-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.app section {
+  padding: clamp(2rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.app h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--cream), var(--pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .app section,
+  .app footer {
+    animation: sectionIn 0.5s ease-out backwards;
+  }
+  .app section:nth-of-type(1) { animation-delay: 0.05s; }
+  .app section:nth-of-type(2) { animation-delay: 0.1s; }
+  .app section:nth-of-type(3) { animation-delay: 0.15s; }
+  .app section:nth-of-type(4) { animation-delay: 0.2s; }
+  .app section:nth-of-type(5) { animation-delay: 0.25s; }
+  .app section:nth-of-type(6) { animation-delay: 0.3s; }
+  .app section:nth-of-type(7) { animation-delay: 0.35s; }
+  .app section:nth-of-type(8) { animation-delay: 0.4s; }
+  .app footer { animation-delay: 0.45s; }
+}
+
+@keyframes sectionIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
