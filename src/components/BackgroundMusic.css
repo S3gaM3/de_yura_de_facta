@@ -1,0 +1,33 @@
+.background-music {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--cream);
+  background: var(--bg-card);
+  border: 1px solid rgba(249, 168, 212, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.background-music:hover {
+  border-color: var(--pink);
+  background: rgba(225, 29, 72, 0.15);
+}
+
+.background-music--on {
+  border-color: var(--pink);
+  background: rgba(249, 168, 212, 0.2);
+}
+
+.background-music__icon {
+  line-height: 1;
+}

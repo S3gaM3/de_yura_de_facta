@@ -11,8 +11,13 @@ const LINKS = [
   { id: 'wishwall', label: 'Стена' },
 ]
 
-export function Nav() {
+type NavProps = {
+  secretUnlocked?: boolean
+}
+
+export function Nav({ secretUnlocked }: NavProps) {
   const [visible, setVisible] = useState(false)
+  const links = [...LINKS, ...(secretUnlocked ? [{ id: 'secret', label: 'Секрет' }] : [])]
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 300)
@@ -23,7 +28,7 @@ export function Nav() {
   return (
     <nav className={`nav ${visible ? 'nav--visible' : ''}`} aria-label="Навигация">
       <ul className="nav__list">
-        {LINKS.map(({ id, label }) => (
+        {links.map(({ id, label }) => (
           <li key={id}>
             <a href={`#${id}`} className="nav__link">
               {label}

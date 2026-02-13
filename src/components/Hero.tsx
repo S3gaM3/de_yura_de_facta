@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import './Hero.css'
 
 type HeroProps = {
-  onConfetti: () => void
+  onHeartClick: () => void
 }
 
-export function Hero({ onConfetti }: HeroProps) {
+export function Hero({ onHeartClick }: HeroProps) {
   const [heartScale, setHeartScale] = useState(1)
   const [photoError, setPhotoError] = useState(false)
   const [photoExt, setPhotoExt] = useState<'jpg' | 'png'>('jpg')
@@ -35,11 +35,11 @@ export function Hero({ onConfetti }: HeroProps) {
           <span
             className="hero__heart"
             style={{ transform: `scale(${heartScale})` }}
-            onClick={onConfetti}
+            onClick={onHeartClick}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => e.key === 'Enter' && onConfetti()}
-            aria-label="Нажми для конфетти"
+            onKeyDown={(e) => e.key === 'Enter' && onHeartClick()}
+            aria-label="Нажми на сердечко"
           >
             ♥
           </span>
