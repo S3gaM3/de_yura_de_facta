@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { PlayerStats } from '../../lib/legalGame'
+import { applyUpgradeEffect } from '../../lib/legalUpgrades'
 import './Training.css'
 
 type AgilityTrainingProps = {
@@ -24,15 +25,22 @@ export function AgilityTraining({ stats, onXPGain, onBack }: AgilityTrainingProp
   const targetIdRef = useRef(0)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const required = 50 * (stats.agility + 1)
+  // Применяем улучшение на уменьшение требуемого опыта
+  const reductionUpgrade = (stats.upgrades || []).find(u => u.id === 'agility_xp_reduction')
+  const reductionLevel = reductionUpgrade?.level || 0
+  const baseRequired = 50 * (stats.agility + 1)
+  const required = Math.floor(baseRequired * applyUpgradeEffect('agility_xp_reduction', reductionLevel, 1))
   const currentXP = stats.agilityXP
   const progress = (currentXP / required) * 100
 
-  // Вычисление времени жизни цели в зависимости от уровня ловкости
+  // Вычисление времени жизни цели в зависимости от уровня ловкости и улучшений
   const getTargetLifetime = () => {
     const baseTime = 2000 // 2 секунды
     const reduction = stats.agility * 50 // уменьшаем на 50мс за уровень
-    return Math.max(500, baseTime - reduction) // минимум 0.5 секунды
+    const timeUpgrade = (stats.upgrades || []).find(u => u.id === 'agility_target_time')
+    const timeLevel = timeUpgrade?.level || 0
+    const timeMultiplier = applyUpgradeEffect('agility_target_time', timeLevel, 1)
+    return Math.max(500, (baseTime - reduction) * timeMultiplier) // минимум 0.5 секунды
   }
 
   const spawnTarget = () => {
@@ -72,7 +80,11 @@ export function AgilityTraining({ stats, onXPGain, onBack }: AgilityTrainingProp
   const handleTargetClick = (targetId: number) => {
     setTargets(prev => prev.filter(t => t.id !== targetId))
     setScore(prev => prev + 1)
-    onXPGain(1)
+    // Применяем улучшение на увеличение опыта
+    const xpBoostUpgrade = (stats.upgrades || []).find(u => u.id === 'agility_xp_boost')
+    const xpBoostLevel = xpBoostUpgrade?.level || 0
+    const xpGain = Math.floor(applyUpgradeEffect('agility_xp_boost', xpBoostLevel, 1))
+    onXPGain(xpGain)
   }
 
   const startTraining = () => {

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { PlayerStats } from '../../lib/legalGame'
+import { applyUpgradeEffect } from '../../lib/legalUpgrades'
 import './Training.css'
 
 type StrengthTrainingProps = {
@@ -15,7 +16,11 @@ export function StrengthTraining({ stats, onXPGain, onBack }: StrengthTrainingPr
   const clickCountRef = useRef(0)
   const lastClickTimeRef = useRef(0)
 
-  const required = 100 * (stats.strength + 1)
+  // Применяем улучшение на уменьшение требуемого опыта
+  const reductionUpgrade = (stats.upgrades || []).find(u => u.id === 'strength_xp_reduction')
+  const reductionLevel = reductionUpgrade?.level || 0
+  const baseRequired = 100 * (stats.strength + 1)
+  const required = Math.floor(baseRequired * applyUpgradeEffect('strength_xp_reduction', reductionLevel, 1))
   const currentXP = stats.strengthXP
   const progress = (currentXP / required) * 100
 
@@ -45,7 +50,11 @@ export function StrengthTraining({ stats, onXPGain, onBack }: StrengthTrainingPr
     lastClickTimeRef.current = now
     setClicks(prev => prev + 1)
     setEnergy(prev => Math.max(0, prev - 0.5))
-    onXPGain(1)
+    // Применяем улучшение на увеличение опыта
+    const xpBoostUpgrade = (stats.upgrades || []).find(u => u.id === 'strength_xp_boost')
+    const xpBoostLevel = xpBoostUpgrade?.level || 0
+    const xpGain = Math.floor(applyUpgradeEffect('strength_xp_boost', xpBoostLevel, 1))
+    onXPGain(xpGain)
   }
 
   useEffect(() => {

@@ -16,6 +16,27 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px var(--shadow);
   border: 2px solid var(--border);
+  position: relative;
+}
+
+.legal-game__back-main {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.legal-game__back-main:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
 }
 
 .legal-game__avatar {

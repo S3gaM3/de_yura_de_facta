@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import { loadStats, saveStats, calculateLevel, getTitle, needsExam, getNextExamLevel, PlayerStats, updateEnergy, getMaxEnergy, canPerformAction, useEnergy, getActionCost, canPrestige, prestige, getUnlockedGames } from '../../lib/legalGame'
 import { STORY_QUESTS, generateDailyQuests, updateQuestProgress } from '../../lib/legalQuests'
-import { getRandomEvent, isEventActive } from '../../lib/legalEvents'
+import { getRandomEvent, isEventActive, applyEventEffect } from '../../lib/legalEvents'
+import { applyUpgradeEffect } from '../../lib/legalUpgrades'
+import { applyOfficeEffect } from '../../lib/legalOffice'
 import { StrengthTraining } from './StrengthTraining'
 import { AgilityTraining } from './AgilityTraining'
 import { IntellectTraining } from './IntellectTraining'
@@ -104,10 +106,40 @@ export function LegalGame() {
 
       let updated = useEnergy(prev, cost)
       
+      // Применяем эффекты улучшений
+      const upgradeId = stat === 'strength' ? 'strength_xp_boost' : 
+                       stat === 'agility' ? 'agility_xp_boost' : 
+                       'intellect_xp_boost'
+      const upgrade = (updated.upgrades || []).find(u => u.id === upgradeId)
+      const upgradeLevel = upgrade?.level || 0
+      const boostedXP = applyUpgradeEffect(upgradeId, upgradeLevel, xp)
+      
+      // Применяем эффекты кабинета
+      let finalXP = boostedXP
+      if (stat === 'strength') {
+        const deskUpgrade = (updated.officeUpgrades || []).find(u => u.id === 'desk' && u.purchased)
+        if (deskUpgrade) finalXP = applyOfficeEffect('desk', finalXP)
+      } else if (stat === 'intellect') {
+        const bookshelfUpgrade = (updated.officeUpgrades || []).find(u => u.id === 'bookshelf' && u.purchased)
+        if (bookshelfUpgrade) finalXP = applyOfficeEffect('bookshelf', finalXP)
+      }
+      
+      // Применяем эффекты событий
+      finalXP = Math.floor(applyEventEffect(updated.randomEvent, finalXP))
+      
       const currentXP = stat === 'strength' ? updated.strengthXP : stat === 'agility' ? updated.agilityXP : updated.intellectXP
       const currentValue = updated[stat]
-      const required = 100 * (currentValue + 1)
-      const newXP = currentXP + xp
+      
+      // Применяем улучшение на уменьшение требуемого опыта
+      const reductionId = stat === 'strength' ? 'strength_xp_reduction' : 
+                         stat === 'agility' ? 'agility_xp_reduction' : 
+                         'intellect_xp_reduction'
+      const reductionUpgrade = (updated.upgrades || []).find(u => u.id === reductionId)
+      const reductionLevel = reductionUpgrade?.level || 0
+      const baseRequired = 100 * (currentValue + 1)
+      const required = Math.floor(baseRequired * applyUpgradeEffect(reductionId, reductionLevel, 1))
+      
+      const newXP = currentXP + finalXP
       
       // Обновляем квесты
       const questUpdates: PlayerStats['activeQuests'] = (updated.activeQuests || []).map(quest => {
@@ -144,18 +176,29 @@ export function LegalGame() {
         return quest
       })
       
-      // Проверяем выполненные квесты
+      // Проверяем выполненные квесты и выдаем награды сразу
       const completedQuests = questUpdates.filter(q => q.completed && !(updated.completedQuests || []).includes(q.id))
       let newCoins = updated.coins
       let newEnergy = updated.energy
       const newCompletedQuests = [...(updated.completedQuests || [])]
       
       completedQuests.forEach(quest => {
-        newCompletedQuests.push(quest.id)
-        if (quest.reward.type === 'coins') {
-          newCoins += quest.reward.amount
-        } else if (quest.reward.type === 'energy') {
-          newEnergy = Math.min(updated.maxEnergy, newEnergy + quest.reward.amount)
+        if (!newCompletedQuests.includes(quest.id)) {
+          newCompletedQuests.push(quest.id)
+          if (quest.reward.type === 'coins') {
+            newCoins += quest.reward.amount
+          } else if (quest.reward.type === 'energy') {
+            newEnergy = Math.min(updated.maxEnergy, newEnergy + quest.reward.amount)
+          } else if (quest.reward.type === 'xp') {
+            // Добавляем XP к текущей характеристике
+            if (stat === 'strength') {
+              updated.strengthXP += quest.reward.amount
+            } else if (stat === 'agility') {
+              updated.agilityXP += quest.reward.amount
+            } else {
+              updated.intellectXP += quest.reward.amount
+            }
+          }
         }
       })
       
@@ -286,9 +329,20 @@ export function LegalGame() {
   const energyPercent = (stats.energy / stats.maxEnergy) * 100
   const timeToFullEnergy = Math.ceil((stats.maxEnergy - stats.energy) / 5) // секунд
 
+  const handleBackToMain = () => {
+    window.location.hash = ''
+  }
+
   return (
     <div className="legal-game">
       <div className="legal-game__header">
+        <button 
+          className="legal-game__back-main"
+          onClick={handleBackToMain}
+          title="Вернуться на главный экран"
+        >
+          🏠 Главная
+        </button>
         <div className="legal-game__avatar">⚖️</div>
         <div className="legal-game__info">
           <h2 className="legal-game__title">{stats.title}</h2>

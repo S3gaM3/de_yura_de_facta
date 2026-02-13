@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { PlayerStats } from '../../lib/legalGame'
 import { getQuestionsForLevel, LegalQuestion } from '../../lib/legalQuestions'
+import { applyUpgradeEffect } from '../../lib/legalUpgrades'
 import './Training.css'
 
 type IntellectTrainingProps = {
@@ -26,7 +27,11 @@ export function IntellectTraining({ stats, onXPGain, onBack }: IntellectTraining
   const [totalAnswered, setTotalAnswered] = useState(0)
   const [shuffledOptions, setShuffledOptions] = useState<string[]>([])
 
-  const required = 50 * (stats.intellect + 1)
+  // Применяем улучшение на уменьшение требуемого опыта
+  const reductionUpgrade = (stats.upgrades || []).find(u => u.id === 'intellect_xp_reduction')
+  const reductionLevel = reductionUpgrade?.level || 0
+  const baseRequired = 50 * (stats.intellect + 1)
+  const required = Math.floor(baseRequired * applyUpgradeEffect('intellect_xp_reduction', reductionLevel, 1))
   const currentXP = stats.intellectXP
   const progress = (currentXP / required) * 100
 
@@ -63,7 +68,11 @@ export function IntellectTraining({ stats, onXPGain, onBack }: IntellectTraining
     
     if (isRight) {
       setCorrectCount(prev => prev + 1)
-      const xpGain = Math.max(1, Math.floor(currentQuestion.difficulty / 2))
+      const baseXPGain = Math.max(1, Math.floor(currentQuestion.difficulty / 2))
+      // Применяем улучшение на увеличение опыта
+      const xpBoostUpgrade = (stats.upgrades || []).find(u => u.id === 'intellect_xp_boost')
+      const xpBoostLevel = xpBoostUpgrade?.level || 0
+      const xpGain = Math.floor(applyUpgradeEffect('intellect_xp_boost', xpBoostLevel, baseXPGain))
       onXPGain(xpGain)
     }
     
