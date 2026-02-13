@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAchievements } from '../contexts/AchievementContext'
+import { addXP, XP_REWARDS } from '../lib/xp'
 import './PixelSnake.css'
 
 type MathProblem = {
@@ -83,9 +84,10 @@ function generateMathProblem(): MathProblem {
 
 type PixelSnakeProps = {
   onCaught?: () => void
+  onXPChange?: (newXP: ReturnType<typeof addXP>) => void
 }
 
-export function PixelSnake({ onCaught }: PixelSnakeProps) {
+export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
   const { unlocked } = useAchievements()
   const [active, setActive] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
@@ -188,7 +190,9 @@ export function PixelSnake({ onCaught }: PixelSnakeProps) {
 
     setTimeout(() => {
       if (isCorrect) {
-        // Правильный ответ - закрываем модальное окно
+        // Правильный ответ - начисляем XP и закрываем модальное окно
+        const newXP = addXP(XP_REWARDS.mathProblemSolved)
+        onXPChange?.(newXP)
         setShowProblem(false)
         setProblem(null)
         setSelectedAnswer(null)

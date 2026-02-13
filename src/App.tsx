@@ -113,7 +113,7 @@ export default function App() {
       resetTimer.current = null
     }
     heartClicks.current += 1
-    setXP(() => addXP(XP_REWARDS.heartClick))
+    // XP за клик по сердечку убрано - слишком легко
     
     // Пасхальное яйцо: 7 кликов подряд
     if (heartClicks.current === 7 && !getFoundEggs().includes('egg_1')) {
@@ -144,7 +144,7 @@ export default function App() {
   useEffect(() => {
     const handleScroll = () => {
       scrollCount.current += 1
-      setXP(() => addXP(XP_REWARDS.scroll))
+      // XP за прокрутку убрано - слишком легко получать опыт
       
       if (!confettiFired) {
         fireConfetti()
@@ -256,7 +256,7 @@ export default function App() {
         onConfetti={fireConfetti}
         onFactOpen={(count) => {
           factOpens.current = count
-          setXP(() => addXP(XP_REWARDS.factOpen))
+          // XP за открытие фактов убрано - слишком легко
           if (count >= 3) onUnlock('main_6') // open_facts_3
           if (count >= 5) onUnlock('main_7') // open all facts
         }}
@@ -293,8 +293,10 @@ export default function App() {
       )}
       <PixelSnake
         onCaught={() => {
-          // Можно добавить достижение или XP за "пойманную" змейку
-          setXP(() => addXP(10))
+          // Змейка догнала курсор
+        }}
+        onXPChange={(newXP) => {
+          setXP(() => newXP)
         }}
       />
     </>

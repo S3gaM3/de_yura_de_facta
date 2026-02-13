@@ -42,18 +42,19 @@ export function addXP(amount: number): XPData {
   return newData
 }
 
-/** XP за действия */
+/** XP за действия (усложнено - только за реальные достижения) */
 export const XP_REWARDS = {
-  scroll: 5,
-  heartClick: 3,
-  factOpen: 2,
-  valentineOpen: 10,
-  contractSign: 15,
-  wishAdd: 8,
-  secretEnter: 20,
-  quizComplete: 25,
-  caseOpen: 12,
-  pathComplete: 18,
-  achievement: 50,
-  easterEgg: 100,
+  scroll: 0, // Убрано - слишком легко
+  heartClick: 0, // Убрано - слишком легко
+  factOpen: 0, // Убрано - слишком легко
+  valentineOpen: 5, // Уменьшено
+  contractSign: 8, // Уменьшено
+  wishAdd: 3, // Уменьшено
+  secretEnter: 15, // Уменьшено
+  quizComplete: 20, // Уменьшено
+  caseOpen: 8, // Уменьшено
+  pathComplete: 12, // Уменьшено
+  achievement: 30, // Уменьшено
+  easterEgg: 50, // Уменьшено
+  mathProblemSolved: 15, // Новое - за решение задачи змейки
 }
