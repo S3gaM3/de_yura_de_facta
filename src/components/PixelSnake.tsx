@@ -161,7 +161,7 @@ export function PixelSnake({ onCaught }: PixelSnakeProps) {
           return prev
         }
 
-        const speed = Math.min(distance * 0.08 * deltaTime, 10) // Максимальная скорость
+        const speed = Math.min(distance * 0.008 * deltaTime, 1) // Максимальная скорость (замедлено в 10 раз)
         const angle = Math.atan2(dy, dx)
         
         return {
