@@ -1,0 +1,31 @@
+.falling-hearts {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.falling-hearts__item {
+  position: absolute;
+  top: -5%;
+  display: block;
+  animation: falling-hearts-fall linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .falling-hearts__item {
+    animation: none;
+    opacity: 0 !important;
+  }
+}
+
+@keyframes falling-hearts-fall {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  100% {
+    transform: translateY(110vh) translateX(15px);
+  }
+}
