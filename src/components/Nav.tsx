@@ -5,6 +5,8 @@ const LINKS = [
   { id: 'hero', label: 'Пётр' },
   { id: 'countdown', label: 'До 14.02' },
   { id: 'gallery', label: 'Фото' },
+  { id: 'quotes', label: 'Цитаты' },
+  { id: 'fun-facts', label: 'Ещё факты' },
   { id: 'facts', label: 'Факты' },
   { id: 'valentine', label: 'Открытка' },
   { id: 'contract', label: 'Договор' },

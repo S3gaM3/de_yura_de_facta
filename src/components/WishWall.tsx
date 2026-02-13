@@ -31,9 +31,27 @@ function saveWishes(wishes: Wish[]) {
 
 type WishWallProps = {
   onWishAdd?: () => void
+  onSecretText?: () => void
 }
 
-export function WishWall({ onWishAdd }: WishWallProps) {
+// Секретные фразы для входа во второе секретное место
+const SECRET_PHRASES = [
+  'секретное место',
+  'тайное место',
+  'секрет',
+  'тайна',
+  'секретная зона',
+  'тайная зона',
+  'секретный вход',
+  'тайный вход',
+]
+
+function checkSecretText(text: string): boolean {
+  const lower = text.toLowerCase()
+  return SECRET_PHRASES.some((phrase) => lower.includes(phrase))
+}
+
+export function WishWall({ onWishAdd, onSecretText }: WishWallProps) {
   const [wishes, setWishes] = useState<Wish[]>([])
   const [text, setText] = useState('')
   const [author, setAuthor] = useState('')
@@ -51,6 +69,12 @@ export function WishWall({ onWishAdd }: WishWallProps) {
     e.preventDefault()
     const trimmed = text.trim()
     if (!trimmed) return
+    
+    // Проверка на секретный текст
+    if (checkSecretText(trimmed)) {
+      onSecretText?.()
+    }
+    
     const wish: Wish = {
       id: crypto.randomUUID(),
       text: trimmed,

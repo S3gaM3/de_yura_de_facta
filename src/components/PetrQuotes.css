@@ -1,0 +1,59 @@
+.petr-quotes {
+  padding: 4rem 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.petr-quotes h2 {
+  margin-bottom: 2rem;
+}
+
+.petr-quotes__box {
+  padding: 2rem;
+  background: var(--bg-card);
+  border: 2px solid rgba(249, 168, 212, 0.3);
+  border-radius: 16px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.petr-quotes__text {
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--pink);
+  font-weight: 500;
+  line-height: 1.6;
+  animation: quoteFade 0.4s ease-out;
+}
+
+@keyframes quoteFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.petr-quotes__btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: var(--pink);
+  background: transparent;
+  border: 1px solid var(--pink);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.petr-quotes__btn:hover {
+  background: rgba(249, 168, 212, 0.15);
+  transform: translateY(-2px);
+}

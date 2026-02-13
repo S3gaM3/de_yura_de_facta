@@ -9,20 +9,10 @@ export type Achievement = {
   zone: 'main' | 'secret'
 }
 
-/** Все достижения */
-export const ACHIEVEMENTS: Achievement[] = [
-  { id: 'first_scroll', name: 'Первый скролл', description: 'Прокрутил страницу', reward: 'confetti', zone: 'main' },
-  { id: 'heart_click', name: 'Сердечко', description: 'Нажал на сердечко', reward: 'hearts_more', zone: 'main' },
-  { id: 'open_valentine', name: 'Открытка', description: 'Открыл открытку от коллектива', reward: 'theme_soft', zone: 'main' },
-  { id: 'sign_contract', name: 'Подписант', description: 'Подписал договор о дружбе', reward: 'theme_gold', zone: 'main' },
-  { id: 'leave_wish', name: 'На стене', description: 'Оставил пожелание на стене', reward: 'sparkle', zone: 'main' },
-  { id: 'open_facts_3', name: 'Любопытный', description: 'Открыл 3 факта', reward: 'glow_cards', zone: 'main' },
-  { id: 'enter_secret', name: 'Потайная дверь', description: 'Попал в секретную зону', reward: 'secret_theme', zone: 'secret' },
-  { id: 'quiz_done', name: 'Эрудит', description: 'Прошёл викторину до конца', reward: 'confetti_rainbow', zone: 'secret' },
-  { id: 'case_opened', name: 'Кейсер', description: 'Открыл кейс', reward: 'stars_bg', zone: 'secret' },
-  { id: 'path_done', name: 'Путник', description: 'Прошёл «Выбери путь» до конца', reward: 'theme_cool', zone: 'secret' },
-  { id: 'quizzes_3', name: 'Знаток', description: 'Прошёл 3 викторины в секрете', reward: 'rainbow_hearts', zone: 'secret' },
-]
+import { ACHIEVEMENTS_EXTENDED } from './achievementsExtended'
+
+/** Все достижения (100 штук) */
+export const ACHIEVEMENTS: Achievement[] = ACHIEVEMENTS_EXTENDED
 
 /** Награда-эффект */
 export type EffectId = string

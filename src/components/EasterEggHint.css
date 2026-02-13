@@ -1,0 +1,76 @@
+.easter-hint {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, rgba(225, 29, 72, 0.95), rgba(249, 168, 212, 0.95));
+  border: 2px solid var(--pink);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  max-width: 400px;
+  animation: easter-hint-in 0.3s ease-out;
+}
+
+@keyframes easter-hint-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.easter-hint__icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.easter-hint__content {
+  flex: 1;
+}
+
+.easter-hint__title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.easter-hint__text {
+  font-size: 0.9rem;
+  color: var(--cream);
+  line-height: 1.4;
+}
+
+.easter-hint__close {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--cream);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.easter-hint__close:hover {
+  opacity: 1;
+}
+
+/* Секретная зона */
+.secret-site .easter-hint {
+  background: linear-gradient(135deg, rgba(126, 231, 135, 0.95), rgba(86, 211, 100, 0.95));
+  border-color: #7ee787;
+}

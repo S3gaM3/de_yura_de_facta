@@ -1,0 +1,56 @@
+.xp-bar {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 99;
+  width: min(280px, calc(100vw - 2rem));
+  padding: 0.75rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid rgba(249, 168, 212, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.xp-bar__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.xp-bar__level {
+  font-weight: 600;
+  color: var(--pink);
+}
+
+.xp-bar__xp {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.xp-bar__track {
+  height: 8px;
+  background: rgba(249, 168, 212, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.xp-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--pink));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Секретная зона */
+.secret-site .xp-bar {
+  background: rgba(10, 14, 20, 0.95);
+  border-color: rgba(126, 231, 135, 0.3);
+}
+.secret-site .xp-bar__level {
+  color: #7ee787;
+}
+.secret-site .xp-bar__fill {
+  background: linear-gradient(90deg, #7ee787, #56d364);
+}

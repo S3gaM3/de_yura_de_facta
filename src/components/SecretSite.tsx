@@ -2,10 +2,13 @@ import { useState, useEffect, useCallback } from 'react'
 import { Quiz } from './secret/Quiz'
 import { CaseOpeningSecret } from './secret/CaseOpeningSecret'
 import { ChoosePathSecret } from './secret/ChoosePathSecret'
+import { MemoryGame } from './secret/MemoryGame'
+import { SnakeGame } from './secret/SnakeGame'
+import { ReactionGame } from './secret/ReactionGame'
 import { mathQuiz, designQuiz, photoQuiz, lawQuiz, memeQuiz, slang90Quiz } from './secret/quizData'
 import './SecretSite.css'
 
-type GameId = 'cases' | 'path' | 'math' | 'design' | 'photo' | 'law' | 'meme' | 'slang90' | null
+type GameId = 'cases' | 'path' | 'math' | 'design' | 'photo' | 'law' | 'meme' | 'slang90' | 'memory' | 'snake' | 'reaction' | null
 
 const GAMES: { id: GameId; label: string }[] = [
   { id: 'cases', label: 'Открытие кейсов' },
@@ -16,6 +19,9 @@ const GAMES: { id: GameId; label: string }[] = [
   { id: 'law', label: 'Викторина: юриспруденция' },
   { id: 'meme', label: 'Мемы и молодёжный сленг' },
   { id: 'slang90', label: 'Сленг 90-х' },
+  { id: 'memory', label: 'Игра на память' },
+  { id: 'snake', label: 'Змейка' },
+  { id: 'reaction', label: 'Тест на реакцию' },
 ]
 
 type SecretSiteProps = {
@@ -28,14 +34,14 @@ export function SecretSite({ onBack, onUnlock }: SecretSiteProps) {
   const [, setQuizCount] = useState(0)
 
   useEffect(() => {
-    onUnlock('enter_secret')
+    onUnlock('secret_1') // enter_secret
   }, [onUnlock])
 
   const handleQuizComplete = useCallback(() => {
-    onUnlock('quiz_done')
+    onUnlock('secret_2') // quiz_done
     setQuizCount((c) => {
       const next = c + 1
-      if (next >= 3) onUnlock('quizzes_3')
+      if (next >= 3) onUnlock('secret_5') // quizzes_3
       return next
     })
   }, [onUnlock])
@@ -56,9 +62,15 @@ export function SecretSite({ onBack, onUnlock }: SecretSiteProps) {
       case 'slang90':
         return <Quiz title="Сленг 90-х" questions={slang90Quiz} onBack={back} onComplete={handleQuizComplete} />
       case 'cases':
-        return <CaseOpeningSecret onBack={back} onOpen={() => onUnlock('case_opened')} />
+        return <CaseOpeningSecret onBack={back} onOpen={() => onUnlock('secret_3')} /> // case_opened
       case 'path':
-        return <ChoosePathSecret onBack={back} onComplete={() => onUnlock('path_done')} />
+        return <ChoosePathSecret onBack={back} onComplete={() => onUnlock('secret_4')} /> // path_done
+      case 'memory':
+        return <MemoryGame onBack={back} onComplete={() => onUnlock('secret_31')} />
+      case 'snake':
+        return <SnakeGame onBack={back} onComplete={() => onUnlock('secret_32')} />
+      case 'reaction':
+        return <ReactionGame onBack={back} onComplete={() => onUnlock('secret_33')} />
       default:
         return null
     }

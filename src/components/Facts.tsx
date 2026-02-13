@@ -1,5 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { findEgg, getFoundEggs } from '../lib/easterEggs'
+import { addXP, XP_REWARDS } from '../lib/xp'
+import confetti from 'canvas-confetti'
 import './Facts.css'
+
+function fireConfetti() {
+  confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } })
+}
 
 const FACTS = [
   'Единственный юрист в компании. Когда Пётр в отпуске, договоры подписываем глазами закрыты.',
@@ -20,6 +27,20 @@ type FactsProps = {
 export function Facts({ onConfetti, onFactOpen }: FactsProps) {
   const [revealed, setRevealed] = useState<number | null>(null)
   const [openedSet, setOpenedSet] = useState<Set<number>>(() => new Set())
+
+  useEffect(() => {
+    const handleSelection = () => {
+      const selection = window.getSelection()
+      if (selection && selection.toString().length > 50 && !getFoundEggs().includes('egg_4')) {
+        if (findEgg('egg_4')) {
+          fireConfetti()
+          addXP(XP_REWARDS.easterEgg)
+        }
+      }
+    }
+    document.addEventListener('selectionchange', handleSelection)
+    return () => document.removeEventListener('selectionchange', handleSelection)
+  }, [])
 
   const handleClick = (i: number) => {
     const next = revealed === i ? null : i

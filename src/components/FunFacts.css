@@ -1,0 +1,60 @@
+.fun-facts {
+  padding: 4rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.fun-facts h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.fun-facts__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.fun-facts__card {
+  padding: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid rgba(249, 168, 212, 0.3);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.fun-facts__card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2);
+}
+
+.fun-facts__card--open {
+  border-color: var(--pink);
+  box-shadow: 0 4px 16px rgba(225, 29, 72, 0.3);
+}
+
+.fun-facts__title {
+  font-size: 1.1rem;
+  color: var(--pink);
+  margin-bottom: 0.5rem;
+}
+
+.fun-facts__text {
+  color: var(--cream);
+  line-height: 1.6;
+  margin-top: 0.75rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

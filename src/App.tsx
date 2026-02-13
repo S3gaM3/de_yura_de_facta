@@ -1,13 +1,18 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import confetti from 'canvas-confetti'
 import { useAchievements } from './contexts/AchievementContext'
+import { getXP, addXP, XP_REWARDS } from './lib/xp'
+import { findEgg, getFoundEggs } from './lib/easterEggs'
 import { AgeGate } from './components/AgeGate'
 import { Nav } from './components/Nav'
 import { Hero } from './components/Hero'
 import { SecretSite } from './components/SecretSite'
+import { SecretPlace2 } from './components/SecretPlace2'
 import { Countdown } from './components/Countdown'
 import { Gallery } from './components/Gallery'
 import { Facts } from './components/Facts'
+import { FunFacts } from './components/FunFacts'
+import { PetrQuotes } from './components/PetrQuotes'
 import { ValentineCard } from './components/ValentineCard'
 import { Contract } from './components/Contract'
 import { WishWall } from './components/WishWall'
@@ -16,6 +21,9 @@ import { FallingHearts } from './components/FallingHearts'
 import { BackgroundMusic } from './components/BackgroundMusic'
 import { AchievementEffects } from './components/AchievementEffects'
 import { AchievementPanel } from './components/AchievementPanel'
+import { XPBar } from './components/XPBar'
+import { EasterEggHint } from './components/EasterEggHint'
+import { PixelSnake } from './components/PixelSnake'
 import './App.css'
 
 function fireConfetti() {
@@ -50,19 +58,54 @@ function getSecretUnlocked(): boolean {
   }
 }
 
+function getSecretPlace2Unlocked(): boolean {
+  try {
+    return localStorage.getItem('petr-secret-place-2-unlocked') === '1'
+  } catch {
+    return false
+  }
+}
+
 export default function App() {
   const { unlock, rewards } = useAchievements()
   const [verified, setVerified] = useState(false)
   const [confettiFired, setConfettiFired] = useState(false)
   const [secretUnlocked, setSecretUnlocked] = useState(getSecretUnlocked)
+  const [secretPlace2Unlocked, setSecretPlace2Unlocked] = useState(getSecretPlace2Unlocked)
+  const [xp, setXP] = useState(getXP)
   const heartClicks = useRef(0)
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const scrollCount = useRef(0)
+  const factOpens = useRef(0)
+  const wishCount = useRef(0)
 
   const onUnlock = useCallback((id: string) => {
     const isNew = unlock(id)
-    if (isNew && (id === 'quiz_done' || id === 'quizzes_3')) fireRainbowConfetti()
+    if (isNew) {
+      const newXP = addXP(XP_REWARDS.achievement)
+      setXP(newXP)
+      if (id === 'quiz_done' || id === 'quizzes_3') fireRainbowConfetti()
+    }
     return isNew
   }, [unlock])
+
+  const handleLevelUp = useCallback(() => {
+    fireConfetti()
+  }, [])
+
+  const handleSecretText = useCallback(() => {
+    if (!secretPlace2Unlocked) {
+      setSecretPlace2Unlocked(true)
+      try {
+        localStorage.setItem('petr-secret-place-2-unlocked', '1')
+      } catch {
+        // ignore
+      }
+      fireRainbowConfetti()
+      setXP(() => addXP(XP_REWARDS.easterEgg))
+      onUnlock('combo_1') // Можно добавить специальное достижение
+    }
+  }, [secretPlace2Unlocked, onUnlock])
 
   const onHeartClick = useCallback(() => {
     if (resetTimer.current) {
@@ -70,7 +113,17 @@ export default function App() {
       resetTimer.current = null
     }
     heartClicks.current += 1
-    if (heartClicks.current >= 1) onUnlock('heart_click')
+    setXP(() => addXP(XP_REWARDS.heartClick))
+    
+    // Пасхальное яйцо: 7 кликов подряд
+    if (heartClicks.current === 7 && !getFoundEggs().includes('egg_1')) {
+      if (findEgg('egg_1')) {
+        fireConfetti()
+        setXP(() => addXP(XP_REWARDS.easterEgg))
+      }
+    }
+    
+    if (heartClicks.current >= 1) onUnlock('main_2') // heart_click
     if (heartClicks.current >= 5) {
       heartClicks.current = 0
       setSecretUnlocked(true)
@@ -89,31 +142,106 @@ export default function App() {
   }, [onUnlock])
 
   useEffect(() => {
-    const handleFirstScroll = () => {
+    const handleScroll = () => {
+      scrollCount.current += 1
+      setXP(() => addXP(XP_REWARDS.scroll))
+      
       if (!confettiFired) {
         fireConfetti()
         setConfettiFired(true)
-        onUnlock('first_scroll')
+        onUnlock('main_1') // first_scroll
+      }
+      
+      // Пасхальное яйцо: прокрутка снизу вверх 10 раз
+      if (scrollCount.current >= 10 && !getFoundEggs().includes('egg_7')) {
+        if (findEgg('egg_7')) {
+          fireConfetti()
+          setXP(() => addXP(XP_REWARDS.easterEgg))
+        }
       }
     }
-    window.addEventListener('scroll', handleFirstScroll, { once: true })
-    return () => window.removeEventListener('scroll', handleFirstScroll)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [confettiFired, onUnlock])
+
+  // Пасхальное яйцо: консоль petr()
+  useEffect(() => {
+    // @ts-ignore
+    window.petr = () => {
+      if (!getFoundEggs().includes('egg_2')) {
+        if (findEgg('egg_2')) {
+          fireConfetti()
+          setXP(() => addXP(XP_REWARDS.easterEgg))
+          console.log('🥚 Пасхальное яйцо найдено!')
+        }
+      }
+    }
+  }, [])
+
+  // Пасхальное яйцо: URL параметр
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('secret') === 'petr' && !getFoundEggs().includes('egg_16')) {
+      if (findEgg('egg_16')) {
+        fireConfetti()
+        setXP(() => addXP(XP_REWARDS.easterEgg))
+      }
+    }
+  }, [])
+
+  // Пасхальное яйцо: localStorage
+  useEffect(() => {
+    try {
+      if (localStorage.getItem('petr-easter') === 'found' && !getFoundEggs().includes('egg_17')) {
+        if (findEgg('egg_17')) {
+          fireConfetti()
+          setXP(() => addXP(XP_REWARDS.easterEgg))
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }, [])
 
   return (
     <>
       <AgeGate onVerified={() => setVerified(true)} />
       {verified && (
-    secretUnlocked ? (
+    secretPlace2Unlocked ? (
       <>
         <AchievementEffects rewards={rewards} zone="secret" />
         <AchievementPanel zone="secret" />
-        <SecretSite onBack={() => setSecretUnlocked(false)} onUnlock={onUnlock} />
+        <XPBar xp={xp} onLevelUp={handleLevelUp} />
+        <EasterEggHint />
+        <SecretPlace2 onBack={() => setSecretPlace2Unlocked(false)} />
+      </>
+    ) : secretUnlocked ? (
+      <>
+        <AchievementEffects rewards={rewards} zone="secret" />
+        <AchievementPanel zone="secret" />
+        <XPBar xp={xp} onLevelUp={handleLevelUp} />
+        <EasterEggHint />
+        <SecretSite
+          onBack={() => setSecretUnlocked(false)}
+          onUnlock={(id) => {
+            const isNew = onUnlock(id)
+            if (isNew && id.includes('quiz')) {
+              setXP(() => addXP(XP_REWARDS.quizComplete))
+            } else if (isNew && id.includes('case')) {
+              setXP(() => addXP(XP_REWARDS.caseOpen))
+            } else if (isNew && id.includes('path')) {
+              setXP(() => addXP(XP_REWARDS.pathComplete))
+            }
+            return isNew
+          }}
+        />
       </>
     ) : (
     <>
       <AchievementEffects rewards={rewards} zone="main" />
       <AchievementPanel zone="main" />
+      <XPBar xp={xp} onLevelUp={handleLevelUp} />
+      <EasterEggHint />
       <FallingHearts />
       <div className="app-wrap">
     <main className="app">
@@ -122,16 +250,53 @@ export default function App() {
       <Hero onHeartClick={onHeartClick} />
       <Countdown />
       <Gallery />
-      <Facts onConfetti={fireConfetti} onFactOpen={(count) => count >= 3 && onUnlock('open_facts_3')} />
-      <ValentineCard onConfetti={fireConfetti} onOpen={() => onUnlock('open_valentine')} />
-      <Contract onConfetti={fireConfetti} onSign={() => onUnlock('sign_contract')} />
-      <WishWall onWishAdd={() => onUnlock('leave_wish')} />
+      <PetrQuotes />
+      <FunFacts />
+      <Facts
+        onConfetti={fireConfetti}
+        onFactOpen={(count) => {
+          factOpens.current = count
+          setXP(() => addXP(XP_REWARDS.factOpen))
+          if (count >= 3) onUnlock('main_6') // open_facts_3
+          if (count >= 5) onUnlock('main_7') // open all facts
+        }}
+      />
+      <ValentineCard
+        onConfetti={fireConfetti}
+        onOpen={() => {
+          setXP(() => addXP(XP_REWARDS.valentineOpen))
+          onUnlock('main_3') // open_valentine
+        }}
+      />
+      <Contract
+        onConfetti={fireConfetti}
+        onSign={() => {
+          setXP(() => addXP(XP_REWARDS.contractSign))
+          onUnlock('main_4') // sign_contract
+        }}
+      />
+      <WishWall
+        onWishAdd={() => {
+          wishCount.current += 1
+          setXP(() => addXP(XP_REWARDS.wishAdd))
+          onUnlock('main_5') // leave_wish
+          if (wishCount.current >= 3) onUnlock('main_10')
+          if (wishCount.current >= 5) onUnlock('main_16')
+        }}
+        onSecretText={handleSecretText}
+      />
       <Footer />
     </main>
       </div>
     </>
     )
       )}
+      <PixelSnake
+        onCaught={() => {
+          // Можно добавить достижение или XP за "пойманную" змейку
+          setXP(() => addXP(10))
+        }}
+      />
     </>
   )
 }
