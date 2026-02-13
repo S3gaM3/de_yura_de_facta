@@ -203,6 +203,49 @@ export default function App() {
     }
   }, [])
 
+  // Автоматическая проверка достижений по условиям (время, день недели и т.д.)
+  useEffect(() => {
+    const checkTimeBasedAchievements = () => {
+      const now = new Date()
+      const hour = now.getHours()
+      const day = now.getDay()
+      const date = now.getDate()
+      const month = now.getMonth()
+
+      // Ночной посетитель (после 23:00)
+      if (hour >= 23) {
+        onUnlock('main_19')
+      }
+      // Утренний (до 8:00)
+      if (hour < 8) {
+        onUnlock('main_20')
+      }
+      // Пятничный (пятница = 5)
+      if (day === 5) {
+        onUnlock('main_21')
+      }
+      // Выходной (суббота = 6 или воскресенье = 0)
+      if (day === 0 || day === 6) {
+        onUnlock('main_22')
+      }
+      // Пунктуальный (14 февраля)
+      if (date === 14 && month === 1) {
+        onUnlock('main_18')
+      }
+      // Повторный (проверка через localStorage)
+      const lastVisit = localStorage.getItem('petr-last-visit')
+      if (lastVisit) {
+        onUnlock('main_25')
+      }
+      localStorage.setItem('petr-last-visit', Date.now().toString())
+    }
+
+    checkTimeBasedAchievements()
+    // Проверяем каждую минуту
+    const interval = setInterval(checkTimeBasedAchievements, 60000)
+    return () => clearInterval(interval)
+  }, [onUnlock])
+
   return (
     <>
       <AgeGate onVerified={() => setVerified(true)} />

@@ -1,3 +1,5 @@
+import { ACHIEVEMENTS_EXTENDED } from './achievementsExtended'
+
 /** Достижение */
 export type Achievement = {
   id: string
@@ -8,8 +10,6 @@ export type Achievement = {
   /** main | secret */
   zone: 'main' | 'secret'
 }
-
-import { ACHIEVEMENTS_EXTENDED } from './achievementsExtended'
 
 /** Все достижения (100 штук) */
 export const ACHIEVEMENTS: Achievement[] = ACHIEVEMENTS_EXTENDED

@@ -8,6 +8,11 @@
   transition: none;
 }
 
+.pixel-snake--trapped {
+  opacity: 0.5;
+  filter: grayscale(50%);
+}
+
 .pixel-snake__head {
   font-size: 2rem;
   filter: drop-shadow(0 0 4px rgba(34, 197, 94, 0.8));
@@ -198,4 +203,61 @@ body:has(.pixel-snake__modal) {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Загон для змейки */
+.pixel-snake__trap {
+  position: fixed;
+  border: 3px dashed rgba(34, 197, 94, 0.5);
+  border-radius: 12px;
+  background: rgba(34, 197, 94, 0.1);
+  z-index: 9997;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.pixel-snake__trap--active {
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.3);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+  animation: trap-pulse 2s ease-in-out infinite;
+}
+
+@keyframes trap-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(34, 197, 94, 0.8);
+  }
+}
+
+.pixel-snake__trap-hint {
+  font-size: 0.7rem;
+  color: rgba(34, 197, 94, 0.7);
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: 600;
+}
+
+.pixel-snake__trap-timer {
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.pixel-snake__trap-text {
+  font-size: 0.8rem;
+  color: #22c55e;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.pixel-snake__trap-countdown {
+  font-size: 1.2rem;
+  color: #22c55e;
+  font-weight: 700;
+  font-family: monospace;
 }

@@ -96,8 +96,20 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
   const [problem, setProblem] = useState<MathProblem | null>(null)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [correct, setCorrect] = useState<boolean | null>(null)
+  const [trapped, setTrapped] = useState(false)
+  const [trapTimer, setTrapTimer] = useState<number | null>(null)
+  const [trapTimeLeft, setTrapTimeLeft] = useState(150)
+  const trapStartTimeRef = useRef<number | null>(null)
   const animationFrameRef = useRef<number>()
   const snakeRef = useRef<HTMLDivElement>(null)
+  
+  // Загон в правом нижнем углу (100x100px)
+  const TRAP_ZONE = {
+    x: typeof window !== 'undefined' ? window.innerWidth - 120 : 0,
+    y: typeof window !== 'undefined' ? window.innerHeight - 120 : 0,
+    width: 100,
+    height: 100,
+  }
 
   // Блокировка скролла и взаимодействия при открытом модальном окне
   useEffect(() => {
@@ -141,9 +153,19 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [active])
 
+  // Проверка попадания в загон
+  const checkTrapZone = (x: number, y: number): boolean => {
+    return (
+      x >= TRAP_ZONE.x &&
+      x <= TRAP_ZONE.x + TRAP_ZONE.width &&
+      y >= TRAP_ZONE.y &&
+      y <= TRAP_ZONE.y + TRAP_ZONE.height
+    )
+  }
+
   // Движение змейки к курсору
   useEffect(() => {
-    if (!active || showProblem) return
+    if (!active || showProblem || trapped) return
 
     let lastTime = performance.now()
     const moveSnake = (currentTime: number) => {
@@ -151,6 +173,22 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
       lastTime = currentTime
 
       setPosition((prev) => {
+        // Проверяем, попала ли змейка в загон
+        if (checkTrapZone(prev.x, prev.y) && !trapped) {
+          setTrapped(true)
+          trapStartTimeRef.current = Date.now()
+          setTrapTimeLeft(150)
+          // Таймер на 2.5 минуты (150 секунд)
+          const timer = window.setTimeout(() => {
+            setTrapped(false)
+            setTrapTimer(null)
+            trapStartTimeRef.current = null
+            setTrapTimeLeft(150)
+          }, 150000) // 2.5 минуты = 150000 мс
+          setTrapTimer(timer)
+          return prev // Останавливаем движение
+        }
+
         const dx = mousePos.x - prev.x
         const dy = mousePos.y - prev.y
         const distance = Math.sqrt(dx * dx + dy * dy)
@@ -179,8 +217,11 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current)
       }
+      if (trapTimer) {
+        clearTimeout(trapTimer)
+      }
     }
-  }, [active, mousePos, showProblem, onCaught])
+  }, [active, mousePos, showProblem, onCaught, trapped, trapTimer])
 
   const handleAnswer = (option: number) => {
     if (selectedAnswer !== null) return
@@ -213,13 +254,62 @@ export function PixelSnake({ onCaught, onXPChange }: PixelSnakeProps) {
     }, 2000)
   }
 
+  // Обновление таймера загона
+  useEffect(() => {
+    if (!trapped) return
+    
+    const interval = setInterval(() => {
+      if (trapStartTimeRef.current) {
+        const elapsed = Math.floor((Date.now() - trapStartTimeRef.current) / 1000)
+        const remaining = Math.max(0, 150 - elapsed)
+        setTrapTimeLeft(remaining)
+        if (remaining === 0) {
+          clearInterval(interval)
+        }
+      }
+    }, 1000)
+    
+    return () => clearInterval(interval)
+  }, [trapped])
+
+  // Обновление позиции загона при изменении размера окна
+  useEffect(() => {
+    const updateTrapZone = () => {
+      TRAP_ZONE.x = window.innerWidth - 120
+      TRAP_ZONE.y = window.innerHeight - 120
+    }
+    window.addEventListener('resize', updateTrapZone)
+    return () => window.removeEventListener('resize', updateTrapZone)
+  }, [])
+
   if (!active) return null
 
   return (
     <>
+      {/* Загон в правом нижнем углу */}
+      <div
+        className={`pixel-snake__trap ${trapped ? 'pixel-snake__trap--active' : ''}`}
+        style={{
+          left: `${TRAP_ZONE.x}px`,
+          top: `${TRAP_ZONE.y}px`,
+          width: `${TRAP_ZONE.width}px`,
+          height: `${TRAP_ZONE.height}px`,
+        }}
+      >
+        {trapped ? (
+          <div className="pixel-snake__trap-timer">
+            <div className="pixel-snake__trap-text">Змейка поймана!</div>
+            <div className="pixel-snake__trap-countdown">
+              {trapTimeLeft}с
+            </div>
+          </div>
+        ) : (
+          <div className="pixel-snake__trap-hint">Загони змейку сюда!</div>
+        )}
+      </div>
       <div
         ref={snakeRef}
-        className="pixel-snake"
+        className={`pixel-snake ${trapped ? 'pixel-snake--trapped' : ''}`}
         style={{
           left: `${position.x}px`,
           top: `${position.y}px`,
