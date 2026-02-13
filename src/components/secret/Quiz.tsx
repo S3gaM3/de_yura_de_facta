@@ -11,9 +11,10 @@ type QuizProps = {
   title: string
   questions: QuizQuestion[]
   onBack: () => void
+  onComplete?: () => void
 }
 
-export function Quiz({ title, questions, onBack }: QuizProps) {
+export function Quiz({ title, questions, onBack, onComplete }: QuizProps) {
   const [index, setIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [answered, setAnswered] = useState(false)
@@ -33,6 +34,7 @@ export function Quiz({ title, questions, onBack }: QuizProps) {
   const handleNext = () => {
     if (isLast) {
       setFinished(true)
+      onComplete?.()
     } else {
       setIndex((i) => i + 1)
       setAnswered(false)

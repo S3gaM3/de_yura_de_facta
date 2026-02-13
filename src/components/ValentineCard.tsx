@@ -3,15 +3,17 @@ import './ValentineCard.css'
 
 type ValentineCardProps = {
   onConfetti: () => void
+  onOpen?: () => void
 }
 
-export function ValentineCard({ onConfetti }: ValentineCardProps) {
+export function ValentineCard({ onConfetti, onOpen }: ValentineCardProps) {
   const [opened, setOpened] = useState(false)
 
   const handleOpen = () => {
     if (!opened) {
       setOpened(true)
       onConfetti()
+      onOpen?.()
     }
   }
 

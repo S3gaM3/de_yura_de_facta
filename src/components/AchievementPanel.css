@@ -1,0 +1,146 @@
+.achievement-panel-wrap {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 99;
+}
+
+.achievement-panel__btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  color: var(--cream);
+  background: var(--bg-card);
+  border: 1px solid rgba(249, 168, 212, 0.3);
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.achievement-panel__btn:hover {
+  border-color: var(--pink);
+  background: rgba(225, 29, 72, 0.1);
+}
+
+.achievement-panel__icon {
+  font-size: 1.1rem;
+}
+
+.achievement-panel__count {
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.achievement-panel {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 0;
+  width: min(300px, calc(100vw - 2rem));
+  max-height: 60vh;
+  overflow: auto;
+  background: var(--bg-card);
+  border: 1px solid rgba(249, 168, 212, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  padding: 0.75rem;
+}
+
+.achievement-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--cream);
+}
+
+.achievement-panel__close {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.achievement-panel__close:hover {
+  color: var(--cream);
+  background: rgba(249, 168, 212, 0.15);
+}
+
+.achievement-panel__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.achievement-panel__item {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(249, 168, 212, 0.08);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.achievement-panel__item:last-child {
+  border-bottom: none;
+}
+
+.achievement-panel__item--unlocked {
+  color: var(--cream);
+}
+
+.achievement-panel__item--unlocked .achievement-panel__item-icon {
+  color: var(--pink);
+}
+
+.achievement-panel__item-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+.achievement-panel__item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.achievement-panel__item-text strong {
+  font-size: 0.9rem;
+  color: inherit;
+}
+
+.achievement-panel__item-text span {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+/* Секретная зона — свои цвета для панели */
+.achievement-panel-wrap--secret .achievement-panel__btn {
+  background: rgba(10, 14, 20, 0.95);
+  border-color: rgba(126, 231, 135, 0.3);
+  color: #c5d0de;
+}
+.achievement-panel-wrap--secret .achievement-panel__btn:hover {
+  border-color: #7ee787;
+  background: rgba(126, 231, 135, 0.1);
+}
+.achievement-panel-wrap--secret .achievement-panel {
+  background: rgba(10, 14, 20, 0.98);
+  border-color: rgba(126, 231, 135, 0.25);
+}
+.achievement-panel-wrap--secret .achievement-panel__header,
+.achievement-panel-wrap--secret .achievement-panel__item--unlocked {
+  color: #c5d0de;
+}
+.achievement-panel-wrap--secret .achievement-panel__item--unlocked .achievement-panel__item-icon {
+  color: #7ee787;
+}

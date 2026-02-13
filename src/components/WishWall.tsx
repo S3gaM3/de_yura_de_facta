@@ -29,7 +29,11 @@ function saveWishes(wishes: Wish[]) {
   }
 }
 
-export function WishWall() {
+type WishWallProps = {
+  onWishAdd?: () => void
+}
+
+export function WishWall({ onWishAdd }: WishWallProps) {
   const [wishes, setWishes] = useState<Wish[]>([])
   const [text, setText] = useState('')
   const [author, setAuthor] = useState('')
@@ -55,6 +59,7 @@ export function WishWall() {
     }
     persist([wish, ...wishes])
     setText('')
+    onWishAdd?.()
   }
 
   const handleRemove = (id: string) => {

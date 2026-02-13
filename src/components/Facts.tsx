@@ -14,10 +14,26 @@ const FACTS = [
 
 type FactsProps = {
   onConfetti: () => void
+  onFactOpen?: (openedCount: number) => void
 }
 
-export function Facts({ onConfetti }: FactsProps) {
+export function Facts({ onConfetti, onFactOpen }: FactsProps) {
   const [revealed, setRevealed] = useState<number | null>(null)
+  const [openedSet, setOpenedSet] = useState<Set<number>>(() => new Set())
+
+  const handleClick = (i: number) => {
+    const next = revealed === i ? null : i
+    setRevealed(next)
+    if (next !== null) {
+      onConfetti()
+      if (!openedSet.has(next)) {
+        const nextSet = new Set(openedSet)
+        nextSet.add(next)
+        setOpenedSet(nextSet)
+        onFactOpen?.(nextSet.size)
+      }
+    }
+  }
 
   return (
     <section className="facts" id="facts">
@@ -27,16 +43,11 @@ export function Facts({ onConfetti }: FactsProps) {
           <li
             key={i}
             className={`facts__item ${revealed === i ? 'facts__item--open' : ''}`}
-            onClick={() => {
-              const next = revealed === i ? null : i
-              setRevealed(next)
-              if (next !== null) onConfetti()
-            }}
+            onClick={() => handleClick(i)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault()
-                setRevealed(revealed === i ? null : i)
-                if (revealed !== i) onConfetti()
+                handleClick(i)
               }
             }}
             role="button"

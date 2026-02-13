@@ -103,3 +103,77 @@ button {
 a {
   color: var(--accent-soft);
 }
+
+/* --- Достижения: темы --- */
+[data-achievement-theme="soft"] {
+  --bg: #0f080c;
+  --accent: #e11d48;
+  --accent-soft: #f472b6;
+  --pink: #fbcfe8;
+  --cream: #fef7f9;
+}
+[data-achievement-theme="gold"] {
+  --bg: #0d0c08;
+  --bg-card: #1a1812;
+  --accent: #ca8a04;
+  --accent-soft: #eab308;
+  --pink: #fde047;
+  --cream: #fefce8;
+  --muted: #a8a29e;
+}
+[data-achievement-theme="gold"] body::before {
+  background: linear-gradient(135deg, #1a1508 0%, #2d2208 30%, #1f1a08 60%, #262008 100%);
+  background-size: 400% 400%;
+}
+[data-achievement-theme="cool"] {
+  --bg: #0a0d12;
+  --bg-card: #121820;
+  --accent: #38bdf8;
+  --accent-soft: #7dd3fc;
+  --pink: #a5b4fc;
+  --cream: #f0f9ff;
+  --muted: #94a3b8;
+}
+[data-achievement-theme="cool"] body::before {
+  background: linear-gradient(135deg, #0a0d12 0%, #0f172a 30%, #1e293b 60%, #0f172a 100%);
+  background-size: 400% 400%;
+}
+
+/* --- Достижения: эффекты --- */
+body.effect-hearts-more .falling-hearts__item {
+  opacity: 0.12 !important;
+}
+body.effect-sparkle .app section .facts__item:hover,
+body.effect-sparkle .app section .valentine__card:hover,
+body.effect-sparkle .app section .contract__box:hover {
+  animation: sparkle-shine 2s ease-in-out;
+}
+@keyframes sparkle-shine {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.08); }
+}
+body.effect-glow-cards .app section .facts__item--open,
+body.effect-glow-cards .app section .valentine__card,
+body.effect-glow-cards .app section .contract__box {
+  box-shadow: 0 0 20px rgba(249, 168, 212, 0.2);
+}
+body.effect-stars-bg::after {
+  background-image: radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.4), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.3), transparent),
+    radial-gradient(2px 2px at 50px 160px, rgba(255,255,255,0.35), transparent);
+  background-size: 200% 200%;
+  background-repeat: repeat;
+  animation: roomGlow 30s ease-in-out infinite;
+}
+body.effect-rainbow-hearts .falling-hearts__item {
+  animation-duration: 12s !important;
+}
+body.effect-rainbow-hearts .falling-hearts__item:nth-child(odd) {
+  color: #f472b6;
+}
+body.effect-rainbow-hearts .falling-hearts__item:nth-child(3n) {
+  color: #a78bfa;
+}
+body.effect-rainbow-hearts .falling-hearts__item:nth-child(5n) {
+  color: #34d399;
+}

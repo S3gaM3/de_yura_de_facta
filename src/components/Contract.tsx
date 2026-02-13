@@ -3,15 +3,17 @@ import './Contract.css'
 
 type ContractProps = {
   onConfetti: () => void
+  onSign?: () => void
 }
 
-export function Contract({ onConfetti }: ContractProps) {
+export function Contract({ onConfetti, onSign }: ContractProps) {
   const [signed, setSigned] = useState(false)
 
   const handleSign = () => {
     if (!signed) {
       setSigned(true)
       onConfetti()
+      onSign?.()
     }
   }
 
