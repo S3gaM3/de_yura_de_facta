@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { AgeGate } from './components/AgeGate'
 import { Nav } from './components/Nav'
 import { Hero } from './components/Hero'
@@ -14,36 +14,10 @@ import { Footer } from './components/Footer'
 import { FallingHearts } from './components/FallingHearts'
 import { BackgroundMusic } from './components/BackgroundMusic'
 import { PixelSnake } from './components/PixelSnake'
-import { LegalGame } from './components/legal/LegalGame'
-import { LegalGameSection } from './components/LegalGameSection'
 import './App.css'
 
 export default function App() {
   const [verified, setVerified] = useState(false)
-  const [showGame, setShowGame] = useState(false)
-
-  useEffect(() => {
-    const hash = window.location.hash
-    if (hash === '#legal-game') {
-      setShowGame(true)
-    }
-    
-    const handleHashChange = () => {
-      setShowGame(window.location.hash === '#legal-game')
-    }
-    
-    window.addEventListener('hashchange', handleHashChange)
-    return () => window.removeEventListener('hashchange', handleHashChange)
-  }, [])
-
-  if (showGame) {
-    return (
-      <>
-        <AgeGate onVerified={() => setVerified(true)} />
-        {verified && <LegalGame />}
-      </>
-    )
-  }
 
   return (
     <>
@@ -64,7 +38,6 @@ export default function App() {
               <ValentineCard />
               <Contract />
               <WishWall />
-              <LegalGameSection />
               <Footer />
             </main>
           </div>

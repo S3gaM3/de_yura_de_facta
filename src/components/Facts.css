@@ -22,14 +22,14 @@
 
 .facts__item:hover {
   border-color: var(--accent);
-  background: #ffffff;
+  background: var(--bg-secondary);
   box-shadow: 0 4px 12px var(--shadow-hover);
 }
 
 .facts__item--open {
   border-color: var(--accent);
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.15);
+  background: var(--bg-secondary);
+  box-shadow: 0 4px 16px rgba(230, 57, 80, 0.2);
 }
 
 .facts__number {

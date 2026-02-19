@@ -11,7 +11,6 @@ const LINKS = [
   { id: 'valentine', label: 'Открытка' },
   { id: 'contract', label: 'Договор' },
   { id: 'wishwall', label: 'Стена' },
-  { id: 'legal-game', label: '⚖️ Игра' },
 ]
 
 export function Nav() {

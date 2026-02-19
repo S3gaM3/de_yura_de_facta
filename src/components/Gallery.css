@@ -10,8 +10,8 @@
   border-radius: 12px;
   overflow: hidden;
   border: 2px solid var(--border);
-  background: #ffffff;
-  box-shadow: 0 2px 8px var(--shadow);
+  background: var(--bg-card);
+  box-shadow: 0 2px 12px var(--shadow);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 

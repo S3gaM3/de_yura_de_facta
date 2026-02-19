@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import './FallingHearts.css'
 
-const COLORS = ['#0066cc', '#0052a3', '#004080', '#3385d6']
+const COLORS = ['#e63950', '#ff6b6b', '#ff8a8a', '#f8b4b4']
 const COUNT = 28
 
 function seed(id: number) {

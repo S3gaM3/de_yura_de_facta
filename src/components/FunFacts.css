@@ -17,7 +17,7 @@
 
 .fun-facts__card {
   padding: 1.75rem;
-  background: #ffffff;
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 12px;
   cursor: pointer;
@@ -33,7 +33,7 @@
 
 .fun-facts__card--open {
   border-color: var(--accent);
-  box-shadow: 0 8px 24px rgba(0, 102, 204, 0.2);
+  box-shadow: 0 8px 24px rgba(230, 57, 80, 0.2);
 }
 
 .fun-facts__title {

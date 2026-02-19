@@ -14,7 +14,7 @@
   font-family: var(--font-body);
   font-size: 1rem;
   color: var(--cream);
-  background: #ffffff;
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 8px;
   resize: vertical;
@@ -31,7 +31,7 @@
 .wishwall__input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  box-shadow: 0 0 0 3px rgba(230, 57, 80, 0.2);
 }
 
 .wishwall__row {
@@ -48,7 +48,7 @@
   font-family: var(--font-body);
   font-size: 0.95rem;
   color: var(--cream);
-  background: #ffffff;
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 1px 3px var(--shadow);
@@ -61,7 +61,7 @@
 .wishwall__author:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  box-shadow: 0 0 0 3px rgba(230, 57, 80, 0.2);
 }
 
 .wishwall__btn {
@@ -73,7 +73,7 @@
   border: none;
   border-radius: 8px;
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+  box-shadow: 0 2px 12px rgba(230, 57, 80, 0.4);
 }
 
 .wishwall__btn:hover:not(:disabled) {
