@@ -54,3 +54,6 @@
 .secret-site .xp-bar__fill {
   background: linear-gradient(90deg, #7ee787, #56d364);
 }
+.secret-site .xp-bar__xp {
+  color: #8b949e;
+}

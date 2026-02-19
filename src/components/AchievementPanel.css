@@ -144,3 +144,6 @@
 .achievement-panel-wrap--secret .achievement-panel__item--unlocked .achievement-panel__item-icon {
   color: #7ee787;
 }
+.achievement-panel-wrap--secret .achievement-panel__item {
+  color: #8b949e;
+}
