@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './MemoryGame.css'
 
 const SYMBOLS = ['♥', '★', '◆', '●', '▲', '■', '♦', '♠']
@@ -13,6 +13,7 @@ export function MemoryGame({ onBack, onComplete }: MemoryGameProps) {
   const [flipped, setFlipped] = useState<number[]>([])
   const [moves, setMoves] = useState(0)
   const [won, setWon] = useState(false)
+  const completedRef = useRef(false)
 
   useEffect(() => {
     const pairs = [...SYMBOLS.slice(0, 6), ...SYMBOLS.slice(0, 6)]
@@ -21,23 +22,26 @@ export function MemoryGame({ onBack, onComplete }: MemoryGameProps) {
   }, [])
 
   useEffect(() => {
-    if (flipped.length === 2) {
-      const [a, b] = flipped
-      if (cards[a].symbol === cards[b].symbol) {
-        setCards((prev) => prev.map((c, i) => (i === a || i === b ? { ...c, matched: true } : c)))
-        setFlipped([])
-        if (cards.filter((c) => !c.matched).length === 2) {
-          setTimeout(() => {
-            setWon(true)
-            onComplete?.()
-          }, 500)
-        }
-      } else {
+    if (flipped.length !== 2 || !cards.length) return
+    const [a, b] = flipped
+    if (a >= cards.length || b >= cards.length) return
+    if (cards[a].symbol === cards[b].symbol) {
+      const unmatchedCount = cards.filter((c) => !c.matched).length
+      setCards((prev) => prev.map((c, i) => (i === a || i === b ? { ...c, matched: true } : c)))
+      setFlipped([])
+      setMoves((m) => m + 1)
+      if (unmatchedCount === 2 && !completedRef.current) {
+        completedRef.current = true
         setTimeout(() => {
-          setCards((prev) => prev.map((c) => ({ ...c, flipped: false })))
-          setFlipped([])
-        }, 1000)
+          setWon(true)
+          onComplete?.()
+        }, 500)
       }
+    } else {
+      setTimeout(() => {
+        setCards((prev) => prev.map((c) => ({ ...c, flipped: false })))
+        setFlipped([])
+      }, 1000)
       setMoves((m) => m + 1)
     }
   }, [flipped, cards, onComplete])

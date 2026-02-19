@@ -69,6 +69,7 @@
   justify-content: center;
   gap: 0.15em;
   flex-wrap: wrap;
+  cursor: pointer;
 }
 
 .hero__heart {
@@ -76,6 +77,10 @@
   color: var(--accent);
   transition: transform 0.2s ease;
   user-select: none;
+}
+
+.hero__heart--clickable {
+  cursor: pointer;
 }
 
 .hero__heart:hover {

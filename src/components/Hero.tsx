@@ -1,10 +1,31 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import './Hero.css'
 
-export function Hero() {
+type HeroProps = {
+  onHeartClick?: () => void
+  onTitleTripleTap?: () => void
+}
+
+export function Hero({ onHeartClick, onTitleTripleTap }: HeroProps) {
   const [heartScale, setHeartScale] = useState(1)
   const [photoError, setPhotoError] = useState(false)
   const [photoExt, setPhotoExt] = useState<'jpg' | 'png'>('jpg')
+
+  const handleHeartClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation()
+    onHeartClick?.()
+  }, [onHeartClick])
+
+  const tapTimesRef = useRef<number[]>([])
+  const handleTitleTap = useCallback(() => {
+    const now = Date.now()
+    tapTimesRef.current = tapTimesRef.current.filter((t) => now - t < 500)
+    tapTimesRef.current.push(now)
+    if (tapTimesRef.current.length >= 3) {
+      tapTimesRef.current = []
+      onTitleTripleTap?.()
+    }
+  }, [onTitleTripleTap])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -26,12 +47,31 @@ export function Hero() {
           />
         )}
         <span className="hero__badge">14 февраля</span>
-        <h1 className="hero__title">
+        <h1
+          className="hero__title"
+          onClick={handleTitleTap}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') handleTitleTap()
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Пётр"
+        >
           Пётр
           <span
-            className="hero__heart"
+            className="hero__heart hero__heart--clickable"
             style={{ transform: `scale(${heartScale})` }}
             aria-label="Сердечко"
+            role="button"
+            tabIndex={0}
+            onClick={(e) => handleHeartClick(e)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                e.stopPropagation()
+                onHeartClick?.()
+              }
+            }}
           >
             ♥
           </span>

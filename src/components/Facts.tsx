@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useAchievements } from '../contexts/AchievementContext'
 import './Facts.css'
 
 const FACTS = [
@@ -14,9 +15,21 @@ const FACTS = [
 
 export function Facts() {
   const [revealed, setRevealed] = useState<number | null>(null)
+  const [, setEverOpened] = useState<Set<number>>(new Set())
+  const { unlock } = useAchievements()
 
   const handleClick = (i: number) => {
-    setRevealed(revealed === i ? null : i)
+    const next = revealed === i ? null : i
+    setRevealed(next)
+    if (next !== null) {
+      setEverOpened((prev) => {
+        const nextSet = new Set(prev)
+        nextSet.add(next)
+        if (nextSet.size >= 3) unlock('main_6')
+        if (nextSet.size >= FACTS.length) unlock('main_7')
+        return nextSet
+      })
+    }
   }
 
   return (

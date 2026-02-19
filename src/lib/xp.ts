@@ -36,6 +36,9 @@ export function addXP(amount: number): XPData {
   const newData = calculateLevel(newTotal)
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ total: newTotal }))
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('petr-xp-update'))
+    }
   } catch {
     // ignore
   }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './CaseOpening.css'
 
 const ITEMS = [
@@ -22,18 +22,23 @@ type CaseOpeningSecretProps = {
 export function CaseOpeningSecret({ onBack, onOpen }: CaseOpeningSecretProps) {
   const [spinning, setSpinning] = useState(false)
   const [result, setResult] = useState<string | null>(null)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => () => {
+    if (timerRef.current) clearTimeout(timerRef.current)
+  }, [])
 
   const handleOpen = () => {
     if (spinning) return
     setSpinning(true)
     setResult(null)
     const duration = 2500 + Math.random() * 1500
-    const timer = setTimeout(() => {
+    timerRef.current = setTimeout(() => {
+      timerRef.current = null
       setResult(ITEMS[Math.floor(Math.random() * ITEMS.length)])
       setSpinning(false)
       onOpen?.()
     }, duration)
-    return () => clearTimeout(timer)
   }
 
   return (

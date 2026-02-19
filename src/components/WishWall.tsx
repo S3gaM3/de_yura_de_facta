@@ -1,5 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useAchievements } from '../contexts/AchievementContext'
+import { addXP, XP_REWARDS } from '../lib/xp'
 import './WishWall.css'
+
+const SECRET_PHRASES = [
+  'секретное место', 'тайное место', 'секрет', 'тайна',
+  'секретная зона', 'тайная зона', 'секретный вход', 'тайный вход',
+]
 
 const STORAGE_KEY = 'petr-wishes'
 
@@ -29,13 +36,25 @@ function saveWishes(wishes: Wish[]) {
   }
 }
 
-export function WishWall() {
+type WishWallProps = {
+  onSecretPlaceFound?: () => void
+}
+
+export function WishWall({ onSecretPlaceFound }: WishWallProps) {
   const [wishes, setWishes] = useState<Wish[]>([])
   const [text, setText] = useState('')
   const [author, setAuthor] = useState('')
+  const { unlock } = useAchievements()
 
   useEffect(() => {
-    setWishes(loadWishes())
+    const loaded = loadWishes()
+    setWishes(loaded)
+    const count = loaded.length
+    if (count >= 1) unlock('main_5')
+    if (count >= 3) unlock('main_9')
+    if (count >= 5) unlock('main_18')
+    if (count >= 10) unlock('main_11')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const persist = useCallback((next: Wish[]) => {
@@ -47,15 +66,29 @@ export function WishWall() {
     e.preventDefault()
     const trimmed = text.trim()
     if (!trimmed) return
-    
+
     const wish: Wish = {
       id: crypto.randomUUID(),
       text: trimmed,
       author: author.trim() || 'Аноним',
       date: Date.now(),
     }
-    persist([wish, ...wishes])
+    const nextWishes = [wish, ...wishes]
+    persist(nextWishes)
     setText('')
+
+    const count = nextWishes.length
+    if (count >= 1) unlock('main_5')
+    if (count >= 3) unlock('main_9')
+    if (count >= 5) unlock('main_18')
+    if (count >= 10) unlock('main_11')
+    addXP(XP_REWARDS.wishAdd)
+
+    const lower = trimmed.toLowerCase()
+    if (SECRET_PHRASES.some((p) => lower.includes(p))) {
+      unlock('combo_1')
+      onSecretPlaceFound?.()
+    }
   }
 
   const handleRemove = (id: string) => {

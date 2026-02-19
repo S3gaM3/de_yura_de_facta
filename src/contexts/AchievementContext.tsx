@@ -5,6 +5,9 @@ import {
   getUnlocked,
   unlockAchievement as storeUnlock,
 } from '../lib/achievements'
+import { addXP } from '../lib/xp'
+
+const XP_PER_ACHIEVEMENT = 30
 
 type AchievementContextValue = {
   unlocked: string[]
@@ -22,7 +25,10 @@ export function AchievementProvider({ children }: { children: React.ReactNode })
 
   const unlock = useCallback((id: string) => {
     const ok = storeUnlock(id)
-    if (ok) setUnlocked((prev) => [...prev, id])
+    if (ok) {
+      setUnlocked((prev) => [...prev, id])
+      addXP(XP_PER_ACHIEVEMENT)
+    }
     return ok
   }, [])
 

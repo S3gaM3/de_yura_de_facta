@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { addXP, XP_REWARDS } from '../lib/xp'
 import './PixelSnake.css'
 
 type MathProblem = {
@@ -412,6 +413,7 @@ export function PixelSnake() {
     setTimeout(() => {
       if (isCorrect) {
         setScore((s) => s + 1)
+        addXP(XP_REWARDS.mathProblemSolved)
         setShowProblem(false)
         setProblem(null)
         setSelectedAnswer(null)

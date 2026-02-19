@@ -1,12 +1,17 @@
 import { useState } from 'react'
+import { useAchievements } from '../contexts/AchievementContext'
+import { addXP, XP_REWARDS } from '../lib/xp'
 import './ValentineCard.css'
 
 export function ValentineCard() {
   const [opened, setOpened] = useState(false)
+  const { unlock } = useAchievements()
 
   const handleOpen = () => {
     if (!opened) {
       setOpened(true)
+      unlock('main_3')
+      addXP(XP_REWARDS.valentineOpen)
     }
   }
 

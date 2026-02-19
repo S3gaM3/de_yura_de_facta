@@ -1,12 +1,17 @@
 import { useState } from 'react'
+import { useAchievements } from '../contexts/AchievementContext'
+import { addXP, XP_REWARDS } from '../lib/xp'
 import './Contract.css'
 
 export function Contract() {
   const [signed, setSigned] = useState(false)
+  const { unlock } = useAchievements()
 
   const handleSign = () => {
     if (!signed) {
       setSigned(true)
+      unlock('main_4')
+      addXP(XP_REWARDS.contractSign)
     }
   }
 
